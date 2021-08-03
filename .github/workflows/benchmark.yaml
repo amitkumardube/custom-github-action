@@ -1,0 +1,40 @@
+# Workflow to benchmark the default branch and store the results
+# as an artifact.
+name: Benchmark the default branch
+# run this workflow only on new commits on the default branch
+on:
+  push:
+    branches:
+      - "main" # replace with however your default branch is named
+
+# A workflow consists of multiple jobs
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    name: Run the benchmarks
+    # Which themselves consist of multiple steps
+    steps:
+        # Each step can have a name and either references another
+        # github repository (as in this case) or a docker image (not shown).
+        # Please note that all references must have a version tag,
+        # which forces you to pin your versions (good!)
+        # The first task just clones your repository into the
+        # work area of the workflow
+      - name: Checkout
+        uses: actions/checkout@v2
+
+        # Normally you would produce the benchmark output here
+
+        # In the last task we upload the benchmark results
+        # as artifacts. This will allow us to use them in a different
+        # workflow later.
+      - name: Upload the results
+        uses: actions/upload-artifact@v2
+        # this is how you pass arguments to the action,
+        # in this case the arguments "name" and "path".
+        # You can lookup what these arguments do
+        # in the task repository:
+        # https://github.com/actions/upload-artifact
+        with:
+          name: benchmark_results
+          path: benchmark.json
