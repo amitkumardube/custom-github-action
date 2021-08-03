@@ -1,0 +1,60 @@
+# Workflow to benchmark pull requests and compare with the default branch.
+name: Benchmark pull requests and compare
+# This time, run on pull requests against your default branch
+on:
+  pull_request:
+    branches:
+      - "main" # again, replace if needed
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    name: Run the benchmarks and compare
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+        # Run your benchmarks here...
+
+        # Good example for a community action:
+        # it downloads and extracts artifacts from
+        # other workflows and/or other branches
+      - name: Download benchmark artifact
+        uses: dawidd6/action-download-artifact@v2
+        with:
+          # The ${ } is the way in github actions to
+          # specify variables.
+          # See here: https://help.github.com/en/actions/reference/context-and-expression-syntax-for-github-actions
+          # github is a predefined variable, which
+          # contains a lot of useful information, e.g.
+          # a API token specific to your repository
+          # to access the GitHub API.
+          github_token: $
+          # A reference to our other workflow file
+          workflow: benchmark_default.yml
+          # The name of the artifact we created there
+          name: benchmark_results
+          # Where to put the downloaded artifacts
+          path: old_benchmark
+          # Again, some information we use from the
+          # github variable: get the commit-hash of
+          # the target branch of this PR
+          # (= the newest commit on our default branch)
+          # and use the artifacts from the workflow,
+          # that happened on this commit.
+          # See here: https://developer.github.com/webhooks/event-payloads/#pull_request
+          commit: $
+        # The benchmark on the default branch could fail for
+        # multiple reasons. We still want to go on with
+        # this workflow, even if the default branch
+        # result is not available.
+        continue-on-error: true
+      - name: Compare and comment
+        # Use the action defined in this repository
+        uses: ./
+        with:
+          # we pass two arguments:
+          # where to find the current JSON file
+          json_file: "benchmark.json"
+          # and where to find the comparison JSON file
+          comparison_json_file: "old_benchmark/benchmark.json"
