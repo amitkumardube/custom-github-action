@@ -58,3 +58,5 @@ jobs:
           json_file: "benchmark.json"
           # and where to find the comparison JSON file
           comparison_json_file: "old_benchmark/benchmark.json"
+          # pass the token as argument
+          token : ${{ secrets.GITHUB_TOKEN }}
