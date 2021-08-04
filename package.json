@@ -1,0 +1,33 @@
+{
+  "name": "custom-github-action",
+  "version": "1.0.0",
+  "description": "Creating github action using typescript",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && ncc build lib/main.js",
+    "format": "prettier --write **/*.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/amitkumardube/custom-github-action.git"
+  },
+  "keywords": [],
+  "author": "Amit Kumar Dube",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/amitkumardube/custom-github-action/issues"
+  },
+  "homepage": "https://github.com/amitkumardube/custom-github-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.4.0",
+    "@actions/github": "^5.0.0",
+    "@octokit/rest": "^18.9.0"
+  },
+  "devDependencies": {
+    "@types/node": "^16.4.11",
+    "@vercel/ncc": "^0.29.0",
+    "prettier": "^2.3.2",
+    "typescript": "^4.3.5"
+  }
+}
