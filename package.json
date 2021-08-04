@@ -21,7 +21,8 @@
   "homepage": "https://github.com/amitkumardube/custom-github-action#readme",
   "dependencies": {
     "@actions/core": "^1.4.0",
-    "@actions/github": "^5.0.0"
+    "@actions/github": "^5.0.0",
+    "@octokit/rest": "^18.9.0"
   },
   "devDependencies": {
     "@types/node": "^16.4.11",

@@ -106,7 +106,7 @@ function run() {
         const octokit = github.getOctokit(githubToken);
         // Get all comments we currently have...
         // (this is an asynchronous function)
-        const { data: comments } = yield octokit.issues.listComments(Object.assign(Object.assign({}, repo), { issue_number: pullRequestNumber }));
+        const { data: comments } = yield octokit.rest.issues.listComments(Object.assign(Object.assign({}, repo), { issue_number: pullRequestNumber }));
         // ... and check if there is already a comment by us
         const comment = comments.find((comment) => {
             return (comment.user.login === "github-actions[bot]" &&
