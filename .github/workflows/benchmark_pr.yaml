@@ -29,9 +29,9 @@ jobs:
           # contains a lot of useful information, e.g.
           # a API token specific to your repository
           # to access the GitHub API.
-          github_token: $
+          github_token: ${{ secrets.GITHUB_TOKEN }}
           # A reference to our other workflow file
-          workflow: benchmark_default.yml
+          workflow: benchmark.yml
           # The name of the artifact we created there
           name: benchmark_results
           # Where to put the downloaded artifacts
