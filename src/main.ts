@@ -125,7 +125,7 @@ async function run() {
     });
   // if not, create a new comment
   } else {
-    await octokit.issues.createComment({
+    await octokit.rest.issues.createComment({
       ...repo,
       issue_number: pullRequestNumber,
       body: message

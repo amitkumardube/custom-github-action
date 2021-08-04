@@ -118,7 +118,7 @@ function run() {
             // if not, create a new comment
         }
         else {
-            yield octokit.issues.createComment(Object.assign(Object.assign({}, repo), { issue_number: pullRequestNumber, body: message }));
+            yield octokit.rest.issues.createComment(Object.assign(Object.assign({}, repo), { issue_number: pullRequestNumber, body: message }));
         }
     });
 }
