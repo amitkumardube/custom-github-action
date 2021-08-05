@@ -1,46 +1,6 @@
-// We are use the standard fs library to run the code. 
-
-const fs = require("fs");
-
-// read and parse the JSON file
-let readJson = (filename : string) => {
-    // read the file passed as argument to the function
-    const rawdata = fs.readFileSync(filename);
-
-    // Once we read the file. let's parse it
-    const benchmarkJSON = JSON.parse(rawdata);
-
-    return benchmarkJSON;
-}
-
-// create the markdown message from the json files
-
-let createMessage = (benchmark , compbenchmark) : string => {
-    let msg = "## Result of benchmark test \n";
-
-    // title
-    msg += "| Key | Current PR | Default Branch |\n";
-
-    // table column definitions
-    msg += "| :--- | :---: | :---: |\n";
-
-    for (const key in benchmark) {
-        msg += `|${key}`;
-        // second column. value with 2 digits
-        const value = benchmark[key];
-        msg += `|${value.toFixed(2)}`;
-
-        try {
-            const oldValue = compbenchmark[key];
-            msg += `| ${oldValue.toFixed(2)}`;
-        }catch(error){
-            console.log(`can't read ${key} from the comparision file`);
-            msg += "| ";
-        }
-        msg += "| \n";
-    }
-    return msg;
-}
+// import readJson from readfile module
+import {readJson} from './readfile'
+import {createMessage} from './markdown'
 
 // we need two additional imports.
 // These are created by github and are especially built

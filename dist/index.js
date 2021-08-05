@@ -2,11 +2,10 @@
 /******/ 	var __webpack_modules__ = ({
 
 /***/ 109:
-/***/ (function(__unused_webpack_module, __unused_webpack_exports, __nccwpck_require__) {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
-// We are use the standard fs library to run the code. 
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -16,39 +15,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
-const fs = __nccwpck_require__(747);
-// read and parse the JSON file
-let readJson = (filename) => {
-    // read the file passed as argument to the function
-    const rawdata = fs.readFileSync(filename);
-    // Once we read the file. let's parse it
-    const benchmarkJSON = JSON.parse(rawdata);
-    return benchmarkJSON;
-};
-// create the markdown message from the json files
-let createMessage = (benchmark, compbenchmark) => {
-    let msg = "## Result of benchmark test \n";
-    // title
-    msg += "| Key | Current PR | Default Branch |\n";
-    // table column definitions
-    msg += "| :--- | :---: | :---: |\n";
-    for (const key in benchmark) {
-        msg += `|${key}`;
-        // second column. value with 2 digits
-        const value = benchmark[key];
-        msg += `|${value.toFixed(2)}`;
-        try {
-            const oldValue = compbenchmark[key];
-            msg += `| ${oldValue.toFixed(2)}`;
-        }
-        catch (error) {
-            console.log(`can't read ${key} from the comparision file`);
-            msg += "| ";
-        }
-        msg += "| \n";
-    }
-    return msg;
-};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+// import readJson from readfile module
+const readfile_1 = __nccwpck_require__(384);
+const markdown_1 = __nccwpck_require__(821);
 // we need two additional imports.
 // These are created by github and are especially built
 // for github actions.
@@ -80,18 +50,18 @@ function run() {
         const benchmarkFileName = core.getInput("json_file");
         const oldBenchmarkFileName = core.getInput("comparison_json_file");
         // Now read in the files with the function defined above
-        const benchmarks = readJson(benchmarkFileName);
+        const benchmarks = readfile_1.readJson(benchmarkFileName);
         let oldBenchmarks = undefined;
         if (oldBenchmarkFileName) {
             try {
-                oldBenchmarks = readJson(oldBenchmarkFileName);
+                oldBenchmarks = readfile_1.readJson(oldBenchmarkFileName);
             }
             catch (error) {
                 console.log("Can not read comparison file. Continue without it.");
             }
         }
         // and create the message
-        const message = createMessage(benchmarks, oldBenchmarks);
+        const message = markdown_1.createMessage(benchmarks, oldBenchmarks);
         // output it to the console for logging and debugging
         console.log(message);
         // the context does for example also include information
@@ -124,7 +94,66 @@ function run() {
 }
 // Our main method: call the run() function and report any errors
 run().catch(error => core.setFailed("Workflow failed! " + error.message));
+//# sourceMappingURL=main.js.map
 
+/***/ }),
+
+/***/ 821:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// supplying an export statement
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createMessage = void 0;
+// create the markdown message from the json files
+let createMessage = (benchmark, compbenchmark) => {
+    let msg = "## Result of benchmark test \n";
+    // title
+    msg += "| Key | Current PR | Default Branch |\n";
+    // table column definitions
+    msg += "| :--- | :---: | :---: |\n";
+    for (const key in benchmark) {
+        msg += `|${key}`;
+        // second column. value with 2 digits
+        const value = benchmark[key];
+        msg += `|${value.toFixed(2)}`;
+        try {
+            const oldValue = compbenchmark[key];
+            msg += `| ${oldValue.toFixed(2)}`;
+        }
+        catch (error) {
+            console.log(`can't read ${key} from the comparision file`);
+            msg += "| ";
+        }
+        msg += "| \n";
+    }
+    return msg;
+};
+exports.createMessage = createMessage;
+//# sourceMappingURL=markdown.js.map
+
+/***/ }),
+
+/***/ 384:
+/***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
+
+"use strict";
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.readJson = void 0;
+// We are use the standard fs library to run the code. 
+const fs = __nccwpck_require__(747);
+// read and parse the JSON file
+let readJson = (filename) => {
+    // read the file passed as argument to the function
+    const rawdata = fs.readFileSync(filename);
+    // Once we read the file. let's parse it
+    const benchmarkJSON = JSON.parse(rawdata);
+    return benchmarkJSON;
+};
+exports.readJson = readJson;
+//# sourceMappingURL=readfile.js.map
 
 /***/ }),
 
