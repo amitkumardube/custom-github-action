@@ -43,7 +43,7 @@ jobs:
           # and use the artifacts from the workflow,
           # that happened on this commit.
           # See here: https://developer.github.com/webhooks/event-payloads/#pull_request
-          commit: $
+          commit: ${{github.event.pull_request.head.sha}}
         # The benchmark on the default branch could fail for
         # multiple reasons. We still want to go on with
         # this workflow, even if the default branch
