@@ -1,6 +1,8 @@
 // import readJson from readfile module
-import {readJson} from './readfile'
-import {createMessage} from './markdown'
+//import {readJson} from './readfile'
+//import {createMessage} from './markdown'
+
+import { readJson, createMessage } from '.'; // this implied as ./index.ts
 
 // we need two additional imports.
 // These are created by github and are especially built

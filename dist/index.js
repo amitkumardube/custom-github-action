@@ -1,11 +1,43 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 822:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+// creating barrel to put all the exports together
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __exportStar = (this && this.__exportStar) || function(m, exports) {
+    for (var p in m) if (p !== "default" && !Object.prototype.hasOwnProperty.call(exports, p)) __createBinding(exports, m, p);
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+// creating readJson as export alias
+//import * as readJson from './readfile';
+// creating createMessage as export alias
+//import * as createMessage from './markdown';
+// exporting all the imports using alias using export statement
+__exportStar(__nccwpck_require__(384), exports);
+__exportStar(__nccwpck_require__(821), exports);
+//export { readJson, createMessage };
+//# sourceMappingURL=index.js.map
+
+/***/ }),
+
 /***/ 109:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
+// import readJson from readfile module
+//import {readJson} from './readfile'
+//import {createMessage} from './markdown'
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -16,9 +48,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-// import readJson from readfile module
-const readfile_1 = __nccwpck_require__(384);
-const markdown_1 = __nccwpck_require__(821);
+const _1 = __nccwpck_require__(822); // this implied as ./index.ts
 // we need two additional imports.
 // These are created by github and are especially built
 // for github actions.
@@ -50,18 +80,18 @@ function run() {
         const benchmarkFileName = core.getInput("json_file");
         const oldBenchmarkFileName = core.getInput("comparison_json_file");
         // Now read in the files with the function defined above
-        const benchmarks = readfile_1.readJson(benchmarkFileName);
+        const benchmarks = _1.readJson(benchmarkFileName);
         let oldBenchmarks = undefined;
         if (oldBenchmarkFileName) {
             try {
-                oldBenchmarks = readfile_1.readJson(oldBenchmarkFileName);
+                oldBenchmarks = _1.readJson(oldBenchmarkFileName);
             }
             catch (error) {
                 console.log("Can not read comparison file. Continue without it.");
             }
         }
         // and create the message
-        const message = markdown_1.createMessage(benchmarks, oldBenchmarks);
+        const message = _1.createMessage(benchmarks, oldBenchmarks);
         // output it to the console for logging and debugging
         console.log(message);
         // the context does for example also include information
