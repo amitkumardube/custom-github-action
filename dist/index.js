@@ -113,6 +113,7 @@ function run() {
             return (comment.user.login === "github-actions[bot]" &&
                 comment.body.startsWith("## Result of Benchmark Tests\n"));
         });
+        console.log(comment);
         // If yes, update that
         if (comment) {
             yield octokit.issues.updateComment(Object.assign(Object.assign({}, repo), { comment_id: comment.id, body: message }));
