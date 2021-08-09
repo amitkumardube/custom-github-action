@@ -78,6 +78,8 @@ async function run() {
     );
   });
 
+  console.log(comment);
+
   // If yes, update that
   if (comment) {
     await octokit.issues.updateComment({
