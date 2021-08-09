@@ -73,6 +73,8 @@ async function run() {
     issue_number: pullRequestNumber,
   });
 
+  console.log(data);
+
   // ... and check if there is already a comment by us
   const comment = data.find((comment) => {
     return (

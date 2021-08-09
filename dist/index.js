@@ -108,6 +108,7 @@ function run() {
         // (this is an asynchronous function)
         // let data: github.comments;
         const { data } = yield octokit.rest.issues.listComments(Object.assign(Object.assign({}, repo), { issue_number: pullRequestNumber }));
+        console.log(data);
         // ... and check if there is already a comment by us
         const comment = data.find((comment) => {
             return (comment.user.login === "github-actions[bot]" &&
