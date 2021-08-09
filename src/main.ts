@@ -71,10 +71,10 @@ async function run() {
   });
 
   // ... and check if there is already a comment by us
-  const comment = comments.find((comment) => {
+  const comment = comments.find((data) => {
     return (
-      comment.user.login === "github-actions[bot]" &&
-      comment.body.startsWith("## Result of Benchmark Tests\n")
+      data.user.login === "github-actions[bot]" &&
+      data.body.startsWith("## Result of Benchmark Tests\n")
     );
   });
 
