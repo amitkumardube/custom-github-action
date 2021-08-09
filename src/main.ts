@@ -1,6 +1,8 @@
 // import readJson from readfile module
-import {readJson} from './readfile'
-import {createMessage} from './markdown'
+//import {readJson} from './readfile'
+//import {createMessage} from './markdown'
+
+import { readJson, createMessage } from '.'; // this implied as ./index.ts
 
 // we need two additional imports.
 // These are created by github and are especially built
@@ -69,10 +71,10 @@ async function run() {
   });
 
   // ... and check if there is already a comment by us
-  const comment = comments.find((comment) => {
+  const comment = comments.find((data) => {
     return (
-      comment.user.login === "github-actions[bot]" &&
-      comment.body.startsWith("## Result of Benchmark Tests\n")
+      data.user.login === "github-actions[bot]" &&
+      data.body.startsWith("## Result of Benchmark Tests\n")
     );
   });
 
