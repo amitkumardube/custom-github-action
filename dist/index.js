@@ -116,7 +116,7 @@ function run() {
         console.log(comment);
         // If yes, update that
         if (comment) {
-            yield octokit.issues.updateComment(Object.assign(Object.assign({}, repo), { comment_id: comment.id, body: message }));
+            yield octokit.rest.issues.updateComment(Object.assign(Object.assign({}, repo), { comment_id: comment.id, body: message }));
             // if not, create a new comment
         }
         else {
