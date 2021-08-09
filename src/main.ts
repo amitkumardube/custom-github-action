@@ -85,7 +85,7 @@ async function run() {
 
   // If yes, update that
   if (comment) {
-    await octokit.issues.updateComment({
+    await octokit.rest.issues.updateComment({
       ...repo,
       comment_id: comment.id,
       body: message
