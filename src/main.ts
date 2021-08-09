@@ -73,13 +73,11 @@ async function run() {
     issue_number: pullRequestNumber,
   });
 
-  console.log(data);
-
   // ... and check if there is already a comment by us
   const comment = data.find((comment) => {
     return (
       comment.user.login === "github-actions[bot]" &&
-      comment.body.startsWith("## Result of Benchmark Tests\n")
+      comment.body.startsWith("## Result of benchmark test \n")
     );
   });
 
