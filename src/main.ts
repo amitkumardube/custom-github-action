@@ -65,22 +65,27 @@ async function run() {
 
   // Get all comments we currently have...
   // (this is an asynchronous function)
-  const { data: comments } = await octokit.rest.issues.listComments({
+
+ // let data: github.comments;
+
+  const { data } = await octokit.rest.issues.listComments({
     ...repo,
     issue_number: pullRequestNumber,
   });
 
   // ... and check if there is already a comment by us
-  const comment = comments.find((data) => {
+  const comment = data.find((comment) => {
     return (
-      data.user.login === "github-actions[bot]" &&
-      data.body.startsWith("## Result of Benchmark Tests\n")
+      comment.user.login === "github-actions[bot]" &&
+      comment.body.startsWith("## Result of benchmark test \n")
     );
   });
 
+  console.log(comment);
+
   // If yes, update that
   if (comment) {
-    await octokit.issues.updateComment({
+    await octokit.rest.issues.updateComment({
       ...repo,
       comment_id: comment.id,
       body: message
