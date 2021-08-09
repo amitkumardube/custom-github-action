@@ -108,9 +108,9 @@ function run() {
         // (this is an asynchronous function)
         const { data: comments } = yield octokit.rest.issues.listComments(Object.assign(Object.assign({}, repo), { issue_number: pullRequestNumber }));
         // ... and check if there is already a comment by us
-        const comment = comments.find((comment) => {
-            return (comment.user.login === "github-actions[bot]" &&
-                comment.body.startsWith("## Result of Benchmark Tests\n"));
+        const comment = comments.find((data) => {
+            return (data.user.login === "github-actions[bot]" &&
+                data.body.startsWith("## Result of Benchmark Tests\n"));
         });
         // If yes, update that
         if (comment) {
