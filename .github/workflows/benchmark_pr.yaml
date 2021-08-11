@@ -7,7 +7,7 @@ on:
       - "main" # again, replace if needed
   push:
     branches:
-      - "pr_build"
+      - "pr-build"
 
 jobs:
   benchmark:
