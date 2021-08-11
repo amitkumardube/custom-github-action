@@ -50,12 +50,12 @@ function commitMsg() {
             let commitmsg = github.context.payload.head_commit.message;
             console.log(commitmsg);
             // initiating the regular expression constructor
-            let commitmsgpattern = new RegExp('^[a-z]+-[0-9]+', 'i');
+            let commitmsgpattern = new RegExp('^\[[a-z]+-[0-9]+\]', 'i');
             if (commitmsgpattern.test(commitmsg)) {
                 core.info("Commit Message is valid");
             }
             else {
-                core.setFailed("Commit Message should always start with Jira number  in the format as JIRA-1234");
+                core.setFailed("Commit Message should always start with Jira number  in the format as [JIRA-1234]");
                 return;
             }
         }

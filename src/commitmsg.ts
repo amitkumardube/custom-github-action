@@ -18,12 +18,12 @@ async function commitMsg() {
       console.log(commitmsg);
 
       // initiating the regular expression constructor
-      let commitmsgpattern: RegExp = new RegExp('^[a-z]+-[0-9]+', 'i');
+      let commitmsgpattern: RegExp = new RegExp('^\[[a-z]+-[0-9]+\]', 'i');
       
       if (commitmsgpattern.test(commitmsg)) {
           core.info("Commit Message is valid");
       } else {
-          core.setFailed("Commit Message should always start with Jira number  in the format as JIRA-1234");
+          core.setFailed("Commit Message should always start with Jira number  in the format as [JIRA-1234]");
           return;          
       }
 
