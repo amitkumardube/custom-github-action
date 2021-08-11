@@ -6,6 +6,25 @@
 
 "use strict";
 
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -18,8 +37,10 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.commitMsg = void 0;
 // need github library to access information about github context
+// javascript style
 const github = __nccwpck_require__(438);
-const core = __nccwpck_require__(186);
+// typescript style
+const core = __importStar(__nccwpck_require__(186));
 // checking for commit message in the git commit history
 // for the moment we are only checking the head commit.
 function commitMsg() {
@@ -29,7 +50,7 @@ function commitMsg() {
             console.log(github.context.payload.head_commit.message);
         }
         else {
-            core.setFailed("Can only run on push to a branch");
+            core.info("Can only run on push to a branch");
             return;
         }
     });
@@ -110,7 +131,7 @@ function run() {
             // The core module on the other hand let's you get
             // inputs or create outputs or control the action flow
             // e.g. by producing a fatal error
-            core.setFailed("Can only run on pull requests!");
+            core.info("Can only run on pull requests!");
             return;
         }
         // get the inputs of the action. The "token" input
