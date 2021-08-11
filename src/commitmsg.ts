@@ -21,8 +21,10 @@ async function commitMsg() {
       let commitmsgpattern: RegExp = new RegExp('^[a-z]{4-20}-[0-9]{4-20}', 'i');
       
       if (commitmsgpattern.test(commitmsg)) {
+          core.info("Commit Message is valid");
+      } else {
           core.setFailed("Commit Message should always start with Jira number  in the format as JIRA-1234");
-          return;
+          return;          
       }
 
   } else {
