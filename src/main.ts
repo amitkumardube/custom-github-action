@@ -104,3 +104,18 @@ async function run() {
 
 // Our main method: call the run() function and report any errors
 run().catch(error => core.setFailed("Workflow failed! " + error.message));
+
+// checking for commit message in the git commit history
+
+async function commitMsg() {
+  if (github.context.eventName === 'push') {
+
+    console.log(github.context);
+
+  } else {
+    core.setFailed("Can only run on push to a branch");
+    return;
+  }
+}
+
+commitMsg().catch(error => core.setFailed("Can't get the commit message" + error.message));
