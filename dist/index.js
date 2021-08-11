@@ -47,7 +47,14 @@ function commitMsg() {
     return __awaiter(this, void 0, void 0, function* () {
         if (github.context.eventName === 'push') {
             // get the commit message as per the last commit which was pushed
-            console.log(github.context.payload.head_commit.message);
+            let commitmsg = github.context.payload.head_commit.message;
+            console.log(commitmsg);
+            // initiating the regular expression constructor
+            let commitmsgpattern = new RegExp('^[a-z]{4-20}-[0-9]{4-20}', 'i');
+            if (commitmsgpattern.test(commitmsg)) {
+                core.setFailed("Commit Message should always start with Jira number  in the format as JIRA-1234");
+                return;
+            }
         }
         else {
             core.info("Can only run on push to a branch");
@@ -131,7 +138,7 @@ function run() {
             // The core module on the other hand let's you get
             // inputs or create outputs or control the action flow
             // e.g. by producing a fatal error
-            core.info("Can only run on pull requests!");
+            core.info("This function Can only run on pull requests!");
             return;
         }
         // get the inputs of the action. The "token" input
