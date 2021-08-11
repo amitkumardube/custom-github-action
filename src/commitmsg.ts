@@ -18,7 +18,7 @@ async function commitMsg() {
       console.log(commitmsg);
 
       // initiating the regular expression constructor
-      let commitmsgpattern: RegExp = new RegExp('^[+ a-z]{4-20}-[+ 0-9]{4-20}', 'i');
+      let commitmsgpattern: RegExp = new RegExp('^[a-z]{4-20}\-[0-9]{4-20}', 'i');
       
       if (commitmsgpattern.test(commitmsg)) {
           core.info("Commit Message is valid");
