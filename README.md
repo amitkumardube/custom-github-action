@@ -20,3 +20,14 @@ Run below command to install dev dependencies and add them to pacakge.json
 * In order to convert typescript to javascript we are using tsc. We can configure tsconfig.json to configure the behavior of tsc. Run tsc --init to create a default typescript configuration file.
 
 ### Added the configuration to read the commit message to validate it
+
+
+### Modules
+* They define reusable code.
+* They are always evaluated in strict mode. Strict mode was added to javascript 5.
+* Modules are fundamental to typescript and should always be used.
+* Any typescript file that contains either an import or export statement is treated as module.
+* Modules are never evaluated in global scope. It is always local. Only exported code can be used outside of the module.
+* Modules are always deferred and loaded asynchronously and are only loaded when html parsing is finished.
+* es2015 is the first javascript version that natively support modules.
+* esmodules-web-server is the minimum required web server for local development.
