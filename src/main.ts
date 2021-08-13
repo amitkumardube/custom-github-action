@@ -2,7 +2,7 @@
 //import {readJson} from './readfile'
 //import {createMessage} from './markdown'
 
-import { readJson, createMessage } from '.'; // this implied as ./index.ts
+import { readJson, createMessage , commitMsg} from '.'; // this implied as ./index.ts
 
 // we need two additional imports.
 // These are created by github and are especially built
@@ -26,7 +26,7 @@ async function run() {
     // The core module on the other hand let's you get
     // inputs or create outputs or control the action flow
     // e.g. by producing a fatal error
-    core.setFailed("Can only run on pull requests!");
+    core.info("This function Can only run on pull requests!");
     return;
   }
 
@@ -104,3 +104,6 @@ async function run() {
 
 // Our main method: call the run() function and report any errors
 run().catch(error => core.setFailed("Workflow failed! " + error.message));
+
+// calling the commitMsg function to get the commit message from last commit
+commitMsg().catch(error => core.setFailed("Can't get the commit message" + error.message));

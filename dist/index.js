@@ -1,6 +1,75 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 627:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.commitMsg = void 0;
+// need github library to access information about github context
+// javascript style
+const github = __nccwpck_require__(438);
+// typescript style
+const core = __importStar(__nccwpck_require__(186));
+// checking for commit message in the git commit history
+// for the moment we are only checking the head commit.
+function commitMsg() {
+    return __awaiter(this, void 0, void 0, function* () {
+        if (github.context.eventName === 'push') {
+            // get the commit message as per the last commit which was pushed
+            let commitmsg = github.context.payload.head_commit.message;
+            console.log(commitmsg);
+            // initiating the regular expression constructor
+            let commitmsgpattern = new RegExp('^\[[a-z]+-[0-9]+\]', 'i');
+            if (commitmsgpattern.test(commitmsg)) {
+                core.info("Commit Message is valid");
+            }
+            else {
+                core.setFailed("Commit Message should always start with Jira number  in the format as [JIRA-1234]");
+                return;
+            }
+        }
+        else {
+            core.info("Can only run on push to a branch");
+            return;
+        }
+    });
+}
+exports.commitMsg = commitMsg;
+//# sourceMappingURL=commitmsg.js.map
+
+/***/ }),
+
 /***/ 822:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
@@ -25,6 +94,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 // exporting all the imports using alias using export statement
 __exportStar(__nccwpck_require__(384), exports);
 __exportStar(__nccwpck_require__(821), exports);
+__exportStar(__nccwpck_require__(627), exports);
 //export { readJson, createMessage };
 //# sourceMappingURL=index.js.map
 
@@ -71,7 +141,7 @@ function run() {
             // The core module on the other hand let's you get
             // inputs or create outputs or control the action flow
             // e.g. by producing a fatal error
-            core.setFailed("Can only run on pull requests!");
+            core.info("This function Can only run on pull requests!");
             return;
         }
         // get the inputs of the action. The "token" input
@@ -127,6 +197,8 @@ function run() {
 }
 // Our main method: call the run() function and report any errors
 run().catch(error => core.setFailed("Workflow failed! " + error.message));
+// calling the commitMsg function to get the commit message from last commit
+_1.commitMsg().catch(error => core.setFailed("Can't get the commit message" + error.message));
 //# sourceMappingURL=main.js.map
 
 /***/ }),
@@ -216,7 +288,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.issue = exports.issueCommand = void 0;
-const os = __importStar(__nccwpck_require__(87));
+const os = __importStar(__nccwpck_require__(365));
 const utils_1 = __nccwpck_require__(278);
 /**
  * Commands
@@ -327,7 +399,7 @@ exports.getState = exports.saveState = exports.group = exports.endGroup = export
 const command_1 = __nccwpck_require__(351);
 const file_command_1 = __nccwpck_require__(717);
 const utils_1 = __nccwpck_require__(278);
-const os = __importStar(__nccwpck_require__(87));
+const os = __importStar(__nccwpck_require__(365));
 const path = __importStar(__nccwpck_require__(622));
 /**
  * The code to exit an action
@@ -620,7 +692,7 @@ exports.issueCommand = void 0;
 // We use any as a valid input type
 /* eslint-disable @typescript-eslint/no-explicit-any */
 const fs = __importStar(__nccwpck_require__(747));
-const os = __importStar(__nccwpck_require__(87));
+const os = __importStar(__nccwpck_require__(365));
 const utils_1 = __nccwpck_require__(278);
 function issueCommand(command, message) {
     const filePath = process.env[`GITHUB_${command}`];
@@ -666,7 +738,7 @@ exports.toCommandValue = toCommandValue;
 
 /***/ }),
 
-/***/ 53:
+/***/ 87:
 /***/ ((__unused_webpack_module, exports, __nccwpck_require__) => {
 
 "use strict";
@@ -674,7 +746,7 @@ exports.toCommandValue = toCommandValue;
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.Context = void 0;
 const fs_1 = __nccwpck_require__(747);
-const os_1 = __nccwpck_require__(87);
+const os_1 = __nccwpck_require__(365);
 class Context {
     /**
      * Hydrate the context from the environment
@@ -753,7 +825,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getOctokit = exports.context = void 0;
-const Context = __importStar(__nccwpck_require__(53));
+const Context = __importStar(__nccwpck_require__(87));
 const utils_1 = __nccwpck_require__(30);
 exports.context = new Context.Context();
 /**
@@ -846,7 +918,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.getOctokitOptions = exports.GitHub = exports.context = void 0;
-const Context = __importStar(__nccwpck_require__(53));
+const Context = __importStar(__nccwpck_require__(87));
 const Utils = __importStar(__nccwpck_require__(914));
 // octokit + plugins
 const core_1 = __nccwpck_require__(762);
@@ -6375,7 +6447,7 @@ module.exports = require("net");
 
 /***/ }),
 
-/***/ 87:
+/***/ 365:
 /***/ ((module) => {
 
 "use strict";
