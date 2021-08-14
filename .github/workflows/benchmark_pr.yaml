@@ -52,7 +52,7 @@ jobs:
         # this workflow, even if the default branch
         # result is not available.
         continue-on-error: true
-      - name: Compare and comment
+      - name: Compare , comment and check commitmsg
         # Use the action defined in this repository
         uses: ./
         with:
