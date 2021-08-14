@@ -31,4 +31,14 @@ Run below command to install dev dependencies and add them to pacakge.json
 * Modules are always deferred and loaded asynchronously and are only loaded when html parsing is finished.
 * es2015 is the first javascript version that natively support modules.
 * esmodules-web-server is the minimum required web server for local development.
-* 
+
+### How to use this action
+
+```
+uses: amitkumardube/custom-github-action@main
+with:
+    json_file: "benchmark.json"
+    comparison_json_file: "old_benchmark/benchmark.json"
+    token : ${{ secrets.GITHUB_TOKEN }}
+
+``` 
