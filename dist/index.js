@@ -55,15 +55,16 @@ function commitValidation() {
             let commitmsgpattern = new RegExp('^\[[a-z]+-[0-9]+\]', 'i');
             if (commitmsgpattern.test(commitmsg) && commitmsg_length >= 20) {
                 core.info("Commit Message is valid");
+                return "Commit message is valid";
             }
             else {
                 core.setFailed("Commit Message should always start with Reference number in the format as [WWN-1234] and commit message should be >= 20 characters");
-                return;
+                return "Commit Message should always start with Reference number in the format as [WWN-1234] and commit message should be >= 20 characters";
             }
         }
         else {
             core.info("Can only run on push to a branch");
-            return;
+            return "Can only run on push to a branch";
         }
     });
 }
