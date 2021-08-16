@@ -1,7 +1,7 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
-/***/ 627:
+/***/ 259:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -35,7 +35,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.commitMsg = void 0;
+exports.commitValidation = void 0;
 // need github library to access information about github context
 // javascript style
 const github = __nccwpck_require__(438);
@@ -43,19 +43,21 @@ const github = __nccwpck_require__(438);
 const core = __importStar(__nccwpck_require__(186));
 // checking for commit message in the git commit history
 // for the moment we are only checking the head commit.
-function commitMsg() {
+function commitValidation() {
     return __awaiter(this, void 0, void 0, function* () {
         if (github.context.eventName === 'push') {
             // get the commit message as per the last commit which was pushed
             let commitmsg = github.context.payload.head_commit.message;
             console.log(commitmsg);
+            // getting  the length of commit message
+            let commitmsg_length = commitmsg.length;
             // initiating the regular expression constructor
             let commitmsgpattern = new RegExp('^\[[a-z]+-[0-9]+\]', 'i');
-            if (commitmsgpattern.test(commitmsg)) {
+            if (commitmsgpattern.test(commitmsg) && commitmsg_length >= 20) {
                 core.info("Commit Message is valid");
             }
             else {
-                core.setFailed("Commit Message should always start with Jira number  in the format as [JIRA-1234]");
+                core.setFailed("Commit Message should always start with Reference number in the format as [WWN-1234] and commit message should be >= 20 characters");
                 return;
             }
         }
@@ -65,8 +67,8 @@ function commitMsg() {
         }
     });
 }
-exports.commitMsg = commitMsg;
-//# sourceMappingURL=commitmsg.js.map
+exports.commitValidation = commitValidation;
+//# sourceMappingURL=commitValidation.js.map
 
 /***/ }),
 
@@ -94,7 +96,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 // exporting all the imports using alias using export statement
 __exportStar(__nccwpck_require__(384), exports);
 __exportStar(__nccwpck_require__(821), exports);
-__exportStar(__nccwpck_require__(627), exports);
+__exportStar(__nccwpck_require__(259), exports);
 //export { readJson, createMessage };
 //# sourceMappingURL=index.js.map
 
@@ -198,7 +200,7 @@ function run() {
 // Our main method: call the run() function and report any errors
 run().catch(error => core.setFailed("Workflow failed! " + error.message));
 // calling the commitMsg function to get the commit message from last commit
-_1.commitMsg().catch(error => core.setFailed("Can't get the commit message" + error.message));
+_1.commitValidation().catch(error => core.setFailed("Can't get the commit message" + error.message));
 //# sourceMappingURL=main.js.map
 
 /***/ }),

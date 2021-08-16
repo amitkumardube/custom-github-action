@@ -1,4 +1,4 @@
-export {commitMsg}
+export {commitValidation}
 
 // need github library to access information about github context
 
@@ -10,20 +10,23 @@ import * as core from '@actions/core';
 // checking for commit message in the git commit history
 // for the moment we are only checking the head commit.
 
-async function commitMsg() {
+async function commitValidation() {
   if (github.context.eventName === 'push') {
   
     // get the commit message as per the last commit which was pushed
       let commitmsg: string = github.context.payload.head_commit.message;
       console.log(commitmsg);
+    
+      // getting  the length of commit message
+      let commitmsg_length: number = commitmsg.length;
 
       // initiating the regular expression constructor
       let commitmsgpattern: RegExp = new RegExp('^\[[a-z]+-[0-9]+\]', 'i');
       
-      if (commitmsgpattern.test(commitmsg)) {
+      if (commitmsgpattern.test(commitmsg) && commitmsg_length >= 20 ) {
           core.info("Commit Message is valid");
       } else {
-          core.setFailed("Commit Message should always start with Jira number  in the format as [JIRA-1234]");
+          core.setFailed("Commit Message should always start with Reference number in the format as [WWN-1234] and commit message should be >= 20 characters");
           return;          
       }
 
