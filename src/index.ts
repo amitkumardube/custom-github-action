@@ -10,5 +10,5 @@
 
 export * from './readfile';
 export * from './markdown';
-export * from './commitmsg';
+export * from './commitValidation';
 //export { readJson, createMessage };
