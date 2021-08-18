@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<coverage generated="1629148894420" clover="3.2.0">
-  <project timestamp="1629148894421" name="All files">
-    <metrics statements="101" coveredstatements="49" conditionals="2" coveredconditionals="1" methods="3" coveredmethods="1" elements="106" coveredelements="51" complexity="0" loc="101" ncloc="101" packages="1" files="4" classes="4"/>
+<coverage generated="1629321754562" clover="3.2.0">
+  <project timestamp="1629321754562" name="All files">
+    <metrics statements="38" coveredstatements="19" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1" elements="41" coveredelements="21" complexity="0" loc="38" ncloc="38" packages="1" files="1" classes="1"/>
     <file name="commitValidation.ts" path="C:\Users\User\Downloads\terraform_0.14.4_windows_amd64\custom-github-action\src\commitValidation.ts">
       <metrics statements="38" coveredstatements="19" conditionals="2" coveredconditionals="1" methods="1" coveredmethods="1"/>
       <line num="1" count="1" type="stmt"/>
@@ -42,78 +42,6 @@
       <line num="36" count="1" type="stmt"/>
       <line num="37" count="1" type="stmt"/>
       <line num="38" count="1" type="stmt"/>
-    </file>
-    <file name="index.ts" path="C:\Users\User\Downloads\terraform_0.14.4_windows_amd64\custom-github-action\src\index.ts">
-      <metrics statements="14" coveredstatements="14" conditionals="0" coveredconditionals="0" methods="0" coveredmethods="0"/>
-      <line num="1" count="1" type="stmt"/>
-      <line num="2" count="1" type="stmt"/>
-      <line num="3" count="1" type="stmt"/>
-      <line num="4" count="1" type="stmt"/>
-      <line num="5" count="1" type="stmt"/>
-      <line num="6" count="1" type="stmt"/>
-      <line num="7" count="1" type="stmt"/>
-      <line num="8" count="1" type="stmt"/>
-      <line num="9" count="1" type="stmt"/>
-      <line num="10" count="1" type="stmt"/>
-      <line num="11" count="1" type="stmt"/>
-      <line num="12" count="1" type="stmt"/>
-      <line num="13" count="1" type="stmt"/>
-      <line num="14" count="1" type="stmt"/>
-    </file>
-    <file name="markdown.ts" path="C:\Users\User\Downloads\terraform_0.14.4_windows_amd64\custom-github-action\src\markdown.ts">
-      <metrics statements="32" coveredstatements="7" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-      <line num="1" count="1" type="stmt"/>
-      <line num="2" count="1" type="stmt"/>
-      <line num="3" count="1" type="stmt"/>
-      <line num="4" count="1" type="stmt"/>
-      <line num="5" count="1" type="stmt"/>
-      <line num="6" count="1" type="stmt"/>
-      <line num="7" count="1" type="stmt"/>
-      <line num="8" count="0" type="stmt"/>
-      <line num="9" count="0" type="stmt"/>
-      <line num="10" count="0" type="stmt"/>
-      <line num="11" count="0" type="stmt"/>
-      <line num="12" count="0" type="stmt"/>
-      <line num="13" count="0" type="stmt"/>
-      <line num="14" count="0" type="stmt"/>
-      <line num="15" count="0" type="stmt"/>
-      <line num="16" count="0" type="stmt"/>
-      <line num="17" count="0" type="stmt"/>
-      <line num="18" count="0" type="stmt"/>
-      <line num="19" count="0" type="stmt"/>
-      <line num="20" count="0" type="stmt"/>
-      <line num="21" count="0" type="stmt"/>
-      <line num="22" count="0" type="stmt"/>
-      <line num="23" count="0" type="stmt"/>
-      <line num="24" count="0" type="stmt"/>
-      <line num="25" count="0" type="stmt"/>
-      <line num="26" count="0" type="stmt"/>
-      <line num="27" count="0" type="stmt"/>
-      <line num="28" count="0" type="stmt"/>
-      <line num="29" count="0" type="stmt"/>
-      <line num="30" count="0" type="stmt"/>
-      <line num="31" count="0" type="stmt"/>
-      <line num="32" count="0" type="stmt"/>
-    </file>
-    <file name="readfile.ts" path="C:\Users\User\Downloads\terraform_0.14.4_windows_amd64\custom-github-action\src\readfile.ts">
-      <metrics statements="17" coveredstatements="9" conditionals="0" coveredconditionals="0" methods="1" coveredmethods="0"/>
-      <line num="1" count="1" type="stmt"/>
-      <line num="2" count="1" type="stmt"/>
-      <line num="3" count="1" type="stmt"/>
-      <line num="4" count="1" type="stmt"/>
-      <line num="5" count="1" type="stmt"/>
-      <line num="6" count="1" type="stmt"/>
-      <line num="7" count="1" type="stmt"/>
-      <line num="8" count="1" type="stmt"/>
-      <line num="9" count="1" type="stmt"/>
-      <line num="10" count="0" type="stmt"/>
-      <line num="11" count="0" type="stmt"/>
-      <line num="12" count="0" type="stmt"/>
-      <line num="13" count="0" type="stmt"/>
-      <line num="14" count="0" type="stmt"/>
-      <line num="15" count="0" type="stmt"/>
-      <line num="16" count="0" type="stmt"/>
-      <line num="17" count="0" type="stmt"/>
     </file>
   </project>
 </coverage>

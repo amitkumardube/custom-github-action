@@ -43,7 +43,7 @@ function commitValidation() {
         }
         else {
             //core.info("Can only run on push to a branch");
-            return "Can only run on push to a branch";
+            throw new Error("Can only run on push to a branch");
         }
     });
 }

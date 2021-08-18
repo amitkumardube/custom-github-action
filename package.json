@@ -6,7 +6,7 @@
   "scripts": {
     "build": "tsc && ncc build lib/main.js",
     "format": "prettier --write **/*.ts",
-    "test": "jest",
+    "test": "jest --verbose",
     "coverage": "jest --coverage"
   },
 
