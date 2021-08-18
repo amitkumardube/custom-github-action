@@ -103,11 +103,10 @@ async function run() {
 }
 
 // Our main method: call the run() function and report any errors
-run().
-  then(res => core.info(res))
+run()
   .catch(error => core.setFailed("Workflow failed! " + error.message));
 
 // calling the commitMsg function to get the commit message from last commit
 commitValidation()
   .then(res => core.info(res))
-  .catch(error => core.setFailed("Can't get the commit message" + error.message));
+  .catch(error => core.setFailed(error.message));
