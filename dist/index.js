@@ -38,7 +38,7 @@ function commitValidation() {
             }
             else {
                 //core.setFailed("Commit Message should always start with Reference number in the format as [WWN-1234] and commit message should be >= 20 characters");
-                return "Commit Message should always start with Reference number in the format as [WWN-1234] and commit message should be >= 20 characters";
+                throw new Error("Commit Message should always start with Reference number in the format as [WWN-1234] and commit message should be >= 20 characters");
             }
         }
         else {
