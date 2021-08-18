@@ -10,7 +10,7 @@ import * as core from '@actions/core';
 // checking for commit message in the git commit history
 // for the moment we are only checking the head commit.
 
-async function commitValidation() {
+async function commitValidation(): Promise<string> {
   if (github.context.eventName === 'push') {
   
     // get the commit message as per the last commit which was pushed
@@ -24,14 +24,15 @@ async function commitValidation() {
       let commitmsgpattern: RegExp = new RegExp('^\[[a-z]+-[0-9]+\]', 'i');
       
       if (commitmsgpattern.test(commitmsg) && commitmsg_length >= 20 ) {
-          core.info("Commit Message is valid");
+        //core.info("Commit Message is valid");
+        return "Commit message is valid"
       } else {
-          core.setFailed("Commit Message should always start with Reference number in the format as [WWN-1234] and commit message should be >= 20 characters");
-          return;          
+          //core.setFailed("Commit Message should always start with Reference number in the format as [WWN-1234] and should be >= 20 characters");
+          throw new Error("Commit Message should always start with Reference number in the format as [WWN-1234] and should be >= 20 characters");          
       }
 
   } else {
-    core.info("Can only run on push to a branch");
-    return;
+    //core.info("Can only run on push to a branch");
+    return "Can only run on push to a branch";
   }
 }
