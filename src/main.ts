@@ -1,9 +1,3 @@
-// import readJson from readfile module
-//import {readJson} from './readfile'
-//import {createMessage} from './markdown'
-
-import { readJson, createMessage , commitValidation} from '.'; // this implied as ./index.ts
-
 // we need two additional imports.
 // These are created by github and are especially built
 // for github actions.
@@ -22,40 +16,27 @@ async function run() {
   // which always includes information on the action workflow
   // we are currently running in.
   // For example, it let's us check the event that triggered the workflow.
-  if (github.context.eventName !== "pull_request") {
+/*  if (github.context.eventName !== "pull_request") {
     // The core module on the other hand let's you get
     // inputs or create outputs or control the action flow
     // e.g. by producing a fatal error
     core.info("This function Can only run on pull requests!");
     return;
-  }
+  }*/
 
   // get the inputs of the action. The "token" input
   // is not defined so far - we will come to it later.
   const githubToken = core.getInput("token");
-  const benchmarkFileName = core.getInput("json_file");
-  const oldBenchmarkFileName = core.getInput("comparison_json_file");
-
-  // Now read in the files with the function defined above
-  const benchmarks = readJson(benchmarkFileName);
-  let oldBenchmarks = undefined;
-  if(oldBenchmarkFileName) {
-    try {
-      oldBenchmarks = readJson(oldBenchmarkFileName);
-    } catch (error) {
-      console.log("Can not read comparison file. Continue without it.");
-    }
-  }
-  // and create the message
-  const message = createMessage(benchmarks, oldBenchmarks);
-  // output it to the console for logging and debugging
-  console.log(message);
-
+  
   // the context does for example also include information
   // in the pull request or repository we are issued from
   const context = github.context;
-  const repo = context.repo;
-  const pullRequestNumber = context.payload.pull_request.number;
+
+  // with the current context we can extract the name of owner and repo where action is running
+
+  const owner = context.repository_owner;
+  const repo = context.repository;
+
 
   // The Octokit is a helper, to interact with
   // the github REST interface.
@@ -68,45 +49,22 @@ async function run() {
 
  // let data: github.comments;
 
-  const { data } = await octokit.rest.issues.listComments({
-    ...repo,
-    issue_number: pullRequestNumber,
+  const { data } = await octokit.rest.codeScanning.listAlertsForRepo({
+    owner,
+    repo
   });
 
   console.log(data);
 
-  // ... and check if there is already a comment by us
-  const comment = data.find((comment) => {
-    return (
-      comment.user.login === "github-actions[bot]" &&
-      comment.body.startsWith("## Result of benchmark test \n")
-    );
-  });
+  const count = data.length;
 
-  console.log(comment);
+  console.log(count);
 
   // If yes, update that
-  if (comment) {
-    await octokit.rest.issues.updateComment({
-      ...repo,
-      comment_id: comment.id,
-      body: message
-    });
-  // if not, create a new comment
-  } else {
-    await octokit.rest.issues.createComment({
-      ...repo,
-      issue_number: pullRequestNumber,
-      body: message
-    });
-  }
+
 }
 
 // Our main method: call the run() function and report any errors
 run()
   .catch(error => core.setFailed("Workflow failed! " + error.message));
 
-// calling the commitMsg function to get the commit message from last commit
-commitValidation()
-  .then(res => core.info(res))
-  .catch(error => core.setFailed(error.message));
