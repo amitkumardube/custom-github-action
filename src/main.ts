@@ -50,14 +50,10 @@ async function run() {
   // (this is an asynchronous function)
 
  // let data: github.comments;
-  try {
     const { data } = await octokit.rest.codeScanning.listAlertsForRepo({
       owner: owner,
       repo : repo
     });
-  } catch {
-    throw new Error("Hello");
-  }
 //  console.log(data);
 
 //  const count = data.length;
