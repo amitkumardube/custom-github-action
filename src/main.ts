@@ -34,11 +34,11 @@ async function run() {
   const context = github.context;
 
   // with the current context we can extract the name of owner and repo where action is running
-  const owner = context.owner;
-  const repo = context.repo;
+  const owner = context.repo.owner;
+  const repo = context.repo.repo;
 
   console.log(repo);
- 
+  console.log(owner);
   // The Octokit is a helper, to interact with
   // the github REST interface.
   // You can look up the REST interface
