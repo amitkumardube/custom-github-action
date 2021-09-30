@@ -25,9 +25,9 @@ let createMessage = (data: any): string => {
         }
     }
         // second column. value with 2 digits
-    msg += "|"+open;
-    msg += "|"+closed;
-    msg += "|"+total;
+    msg += "|"+open.toString();
+    msg += "|"+closed.toString();
+    msg += "|"+total.toString();
     msg += "| \n";
 
     return msg;
