@@ -8,7 +8,7 @@
 
 // supplying an export statement
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createMessage = void 0;
+exports.createJsonFile = exports.createMessage = void 0;
 // create the markdown message from the json files
 let createMessage = (data) => {
     let open = 0;
@@ -37,7 +37,87 @@ let createMessage = (data) => {
     return msg;
 };
 exports.createMessage = createMessage;
+let createJsonFile = (data) => {
+    let open = 0;
+    let closed = 0;
+    let total = 0;
+    let false_positive = 0;
+    let used_in_tests = 0;
+    let wont_fix = 0;
+    total = data.length;
+    let json_var;
+    for (let i = 0; i < data.length; i++) {
+        let state = data[i].state;
+        let dismis_reason = data[i].dismissed_reason;
+        if (state.toUpperCase() === 'OPEN') {
+            open = open + 1;
+        }
+        else {
+            switch (dismis_reason) {
+                case dismis_reason.toUpperCase() === "FALSE POSITIVE": {
+                    false_positive += 1;
+                    break;
+                }
+                case dismis_reason.toUpperCase() === "USED IN TESTS": {
+                    used_in_tests += 1;
+                    break;
+                }
+                default: {
+                    wont_fix += 1;
+                    break;
+                }
+            }
+            closed = closed + 1;
+        }
+    }
+    json_var = {
+        open: open,
+        dismissed: {
+            false_positive: false_positive,
+            use_in_tests: used_in_tests,
+            wont_fix: wont_fix
+        }
+    };
+    return json_var;
+};
+exports.createJsonFile = createJsonFile;
 //# sourceMappingURL=display_stats.js.map
+
+/***/ }),
+
+/***/ 14:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __createBinding = (this && this.__createBinding) || (Object.create ? (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    Object.defineProperty(o, k2, { enumerable: true, get: function() { return m[k]; } });
+}) : (function(o, m, k, k2) {
+    if (k2 === undefined) k2 = k;
+    o[k2] = m[k];
+}));
+var __setModuleDefault = (this && this.__setModuleDefault) || (Object.create ? (function(o, v) {
+    Object.defineProperty(o, "default", { enumerable: true, value: v });
+}) : function(o, v) {
+    o["default"] = v;
+});
+var __importStar = (this && this.__importStar) || function (mod) {
+    if (mod && mod.__esModule) return mod;
+    var result = {};
+    if (mod != null) for (var k in mod) if (k !== "default" && Object.prototype.hasOwnProperty.call(mod, k)) __createBinding(result, mod, k);
+    __setModuleDefault(result, mod);
+    return result;
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createFile = void 0;
+const fs = __importStar(__nccwpck_require__(747));
+const display_stats_1 = __nccwpck_require__(444);
+const createFile = (data) => {
+    fs.writeFileSync('stats.json', JSON.stringify(display_stats_1.createJsonFile(data), null, 2));
+};
+exports.createFile = createFile;
+//# sourceMappingURL=file.js.map
 
 /***/ }),
 
@@ -58,6 +138,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createMessage = void 0;
 const display_stats_1 = __nccwpck_require__(444);
+const file_1 = __nccwpck_require__(14);
 var display_stats_2 = __nccwpck_require__(444);
 Object.defineProperty(exports, "createMessage", ({ enumerable: true, get: function () { return display_stats_2.createMessage; } }));
 // we need two additional imports.
@@ -107,11 +188,10 @@ function run() {
             owner: owner,
             repo: repo
         });
-        const count = data.length;
-        console.log(count);
         // If yes, update that
         const msg = display_stats_1.createMessage(data);
         core.info(msg);
+        file_1.createFile(data);
     });
 }
 // Our main method: call the run() function and report any errors

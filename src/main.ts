@@ -1,6 +1,8 @@
-import { createMessage } from './display_stats';
+import { createJsonFile, createMessage } from './display_stats';
+import { createFile } from './file';
 
-export {createMessage} from './display_stats'
+export { createMessage } from './display_stats'
+
 // we need two additional imports.
 // These are created by github and are especially built
 // for github actions.
@@ -55,15 +57,14 @@ async function run() {
       repo : repo
     });
   
-  const count = data.length;
-
-  console.log(count);
-
+  
   // If yes, update that
 
   const msg = createMessage(data);
 
   core.info(msg);
+
+  createFile(data);
 
 }
 
