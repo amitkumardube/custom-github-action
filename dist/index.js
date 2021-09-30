@@ -13,6 +13,8 @@ exports.createMessage = void 0;
 let createMessage = (data) => {
     let open, closed, total = 0;
     total = data.count;
+    console.log(open + closed + total);
+    console.log(data);
     let msg = "## Scanning Alerts Statistics \n";
     // title
     msg += "| Open | Closed | Total |\n";
@@ -20,6 +22,7 @@ let createMessage = (data) => {
     msg += "| :--- | :---: | :---: |\n";
     for (let i = 0; i < data.length; i++) {
         let state = data[i].state;
+        console.log(state);
         if (state.toUpperCase() === 'OPEN') {
             open = open + 1;
         }

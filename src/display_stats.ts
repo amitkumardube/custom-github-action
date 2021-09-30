@@ -7,6 +7,8 @@ export {createMessage};
 let createMessage = (data: any): string => {
     let open, closed, total = 0;
     total = data.count;
+    console.log(open + closed + total);
+    console.log(data);
     let msg = "## Scanning Alerts Statistics \n";
 
     // title
@@ -17,6 +19,8 @@ let createMessage = (data: any): string => {
 
     for (let i = 0; i < data.length; i++) {
         let state = data[i].state;
+
+        console.log(state);
 
         if (state.toUpperCase() === 'OPEN') {
             open = open + 1;
