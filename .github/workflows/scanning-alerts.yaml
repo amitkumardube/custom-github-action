@@ -28,3 +28,13 @@ jobs:
         uses: ./
         with:
           token : ${{ secrets.GITHUB_TOKEN }}
+      - name: Upload the results
+        uses: actions/upload-artifact@v2
+        # this is how you pass arguments to the action,
+        # in this case the arguments "name" and "path".
+        # You can lookup what these arguments do
+        # in the task repository:
+        # https://github.com/actions/upload-artifact
+        with:
+          name: code_scanning_statistics
+          path: stats.json
