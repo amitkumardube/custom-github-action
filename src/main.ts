@@ -26,17 +26,19 @@ async function run() {
 
   // get the inputs of the action. The "token" input
   // is not defined so far - we will come to it later.
-  const githubToken = core.getInput("token");
+  //const githubToken = core.getInput("token");
+  const githubToken = "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";
   
   // the context does for example also include information
   // in the pull request or repository we are issued from
   const context = github.context;
 
   // with the current context we can extract the name of owner and repo where action is running
+  const owner = context.owner;
+  const repo = context.repo;
 
-  const owner = context.repository_owner;
-  const repo = context.repository;
-
+  console.log(owner);
+  console.log(repo);
 
   // The Octokit is a helper, to interact with
   // the github REST interface.
@@ -48,17 +50,19 @@ async function run() {
   // (this is an asynchronous function)
 
  // let data: github.comments;
+  try {
+    const { data } = await octokit.rest.codeScanning.listAlertsForRepo({
+      owner: owner,
+      repo : repo
+    });
+  } catch {
+    throw new Error("Hello");
+  }
+//  console.log(data);
 
-  const { data } = await octokit.rest.codeScanning.listAlertsForRepo({
-    owner,
-    repo
-  });
+//  const count = data.length;
 
-  console.log(data);
-
-  const count = data.length;
-
-  console.log(count);
+  //console.log(count);
 
   // If yes, update that
 
