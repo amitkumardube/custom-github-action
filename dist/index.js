@@ -60,15 +60,10 @@ function run() {
         // Get all comments we currently have...
         // (this is an asynchronous function)
         // let data: github.comments;
-        try {
-            const { data } = yield octokit.rest.codeScanning.listAlertsForRepo({
-                owner: owner,
-                repo: repo
-            });
-        }
-        catch (_a) {
-            throw new Error("Hello");
-        }
+        const { data } = yield octokit.rest.codeScanning.listAlertsForRepo({
+            owner: owner,
+            repo: repo
+        });
         //  console.log(data);
         //  const count = data.length;
         //console.log(count);
