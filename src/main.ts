@@ -37,8 +37,6 @@ async function run() {
   const owner = context.repo.owner;
   const repo = context.repo.repo;
 
-  console.log(repo);
-  console.log(owner);
   // The Octokit is a helper, to interact with
   // the github REST interface.
   // You can look up the REST interface
