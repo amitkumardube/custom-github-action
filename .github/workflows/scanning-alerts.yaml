@@ -1,0 +1,30 @@
+# Workflow to benchmark pull requests and compare with the default branch.
+name: Benchmark pull requests and compare
+# This time, run on pull requests against your default branch
+on:
+  pull_request:
+    branches:
+      - "main" # again, replace if needed
+  push:
+    branches:
+      - "**"
+      - "!main"
+
+jobs:
+  benchmark:
+    runs-on: ubuntu-latest
+    name: Run the benchmarks and compare
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+        # Run your benchmarks here...
+
+        # Good example for a community action:
+        # it downloads and extracts artifacts from
+        # other workflows and/or other branches
+      - name: code scanning
+        # Use the action defined in this repository
+        uses: ./
+        with:
+          token : ${{ secrets.GITHUB_TOKEN }}
