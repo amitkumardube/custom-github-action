@@ -28,9 +28,9 @@ let createMessage = (data) => {
         }
     }
     // second column. value with 2 digits
-    msg += `|${open}`;
-    msg += `|${closed}`;
-    msg += `|${total}`;
+    msg += "|" + open;
+    msg += "|" + closed;
+    msg += "|" + total;
     msg += "| \n";
     return msg;
 };
