@@ -42,8 +42,8 @@ function run() {
           }*/
         // get the inputs of the action. The "token" input
         // is not defined so far - we will come to it later.
-        //const githubToken = core.getInput("token");
-        const githubToken = "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";
+        const githubToken = core.getInput("token");
+        //const githubToken = "";
         // the context does for example also include information
         // in the pull request or repository we are issued from
         const context = github.context;
