@@ -27,4 +27,4 @@ jobs:
         # Use the action defined in this repository
         uses: ./
         with:
-          token : ${{ secrets.GITHUB_TOKEN }}
+          token : ${{ secrets.PAT }}
