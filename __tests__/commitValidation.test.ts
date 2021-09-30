@@ -15,7 +15,7 @@ test("Valid Commit Message", () => {
             console.log('Can only run on push to a branch');
             expect(error.message).toBe("Can only run on push to a branch");
         });
-    
+    // restore to original function implementation
     msg.mockRestore();
 });
 
