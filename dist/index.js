@@ -14,10 +14,7 @@ let createMessage = (data) => {
     let open = 0;
     let closed = 0;
     let total = 0;
-    total = data.count;
-    console.log(open);
-    console.log(closed);
-    console.log(total);
+    total = data.length;
     let msg = "## Scanning Alerts Statistics \n";
     // title
     msg += "| Open | Closed | Total |\n";
