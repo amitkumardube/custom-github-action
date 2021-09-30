@@ -5,7 +5,7 @@ export {createMessage};
 // create the markdown message from the json files
 
 let createMessage = (data: any): string => {
-    let open, closed, total: number = 0;
+    let open, closed, total = 0;
     total = data.count;
     let msg = "## Scanning Alerts Statistics \n";
 
