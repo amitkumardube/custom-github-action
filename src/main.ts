@@ -1,3 +1,6 @@
+import { createMessage } from './display_stats';
+
+export {createMessage} from './display_stats'
 // we need two additional imports.
 // These are created by github and are especially built
 // for github actions.
@@ -51,13 +54,16 @@ async function run() {
       owner: owner,
       repo : repo
     });
-  console.log(data);
-
+  
   const count = data.length;
 
   console.log(count);
 
   // If yes, update that
+
+  const msg = createMessage(data);
+
+  core.info(msg);
 
 }
 

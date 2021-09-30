@@ -1,8 +1,46 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 444:
+/***/ ((__unused_webpack_module, exports) => {
+
+"use strict";
+
+// supplying an export statement
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createMessage = void 0;
+// create the markdown message from the json files
+let createMessage = (data) => {
+    let open, closed, total = 0;
+    total = data.count;
+    let msg = "## Scanning Alerts Statistics \n";
+    // title
+    msg += "| Open | Closed | Total |\n";
+    // table column definitions
+    msg += "| :--- | :---: | :---: |\n";
+    for (let i = 0; i < data.length; i++) {
+        let state = data[i].state;
+        if (state.toUpperCase() === 'OPEN') {
+            open = open + 1;
+        }
+        else {
+            closed = closed + 1;
+        }
+    }
+    // second column. value with 2 digits
+    msg += `|${open}`;
+    msg += `|${closed}`;
+    msg += `|${total}`;
+    msg += "| \n";
+    return msg;
+};
+exports.createMessage = createMessage;
+//# sourceMappingURL=display_stats.js.map
+
+/***/ }),
+
 /***/ 109:
-/***/ (function(__unused_webpack_module, __unused_webpack_exports, __nccwpck_require__) {
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
 
@@ -15,6 +53,11 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.createMessage = void 0;
+const display_stats_1 = __nccwpck_require__(444);
+var display_stats_2 = __nccwpck_require__(444);
+Object.defineProperty(exports, "createMessage", ({ enumerable: true, get: function () { return display_stats_2.createMessage; } }));
 // we need two additional imports.
 // These are created by github and are especially built
 // for github actions.
@@ -50,8 +93,6 @@ function run() {
         // with the current context we can extract the name of owner and repo where action is running
         const owner = context.repo.owner;
         const repo = context.repo.repo;
-        console.log(repo);
-        console.log(owner);
         // The Octokit is a helper, to interact with
         // the github REST interface.
         // You can look up the REST interface
@@ -64,10 +105,11 @@ function run() {
             owner: owner,
             repo: repo
         });
-        console.log(data);
         const count = data.length;
         console.log(count);
         // If yes, update that
+        const msg = display_stats_1.createMessage(data);
+        core.info(msg);
     });
 }
 // Our main method: call the run() function and report any errors
