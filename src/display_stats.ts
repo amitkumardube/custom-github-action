@@ -10,6 +10,8 @@ let createMessage = (data: any): string => {
     let total = 0;
     total = data.count;
     console.log(open);
+    console.log(closed);
+    console.log(total);
     let msg = "## Scanning Alerts Statistics \n";
 
     // title
