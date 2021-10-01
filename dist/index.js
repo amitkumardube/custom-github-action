@@ -173,6 +173,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const code_scanning_1 = __nccwpck_require__(140);
 const display_stats_1 = __nccwpck_require__(444);
 const file_1 = __nccwpck_require__(14);
+const secret_scanning_1 = __nccwpck_require__(630);
 // we need two additional imports.
 // These are created by github and are especially built
 // for github actions.
@@ -226,6 +227,7 @@ function run() {
             });
             for (let i = 0; i < data.length; i++) {
                 branch = data[i].name;
+                // getting code scanning alerts
                 yield code_scanning_1.code_scanning(octokit, owner, repo, branch).
                     catch(error => core.setFailed("failed to access code scanning alerts" + error.message));
             }
@@ -239,6 +241,9 @@ function run() {
         let all_stats = supply_total_stats();
         display_stats_1.createMessage(all_stats);
         file_1.append_to_file(all_stats);
+        // getting secret scanning alerts
+        yield secret_scanning_1.secret_scanning(octokit, owner, repo, "all").
+            catch(error => core.setFailed("failed to access secret scanning alerts" + error.message));
     });
 }
 // Our main method: call the run() function and report any errors
@@ -258,6 +263,39 @@ const supply_total_stats = () => {
     return json_var;
 };
 //# sourceMappingURL=main.js.map
+
+/***/ }),
+
+/***/ 630:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.secret_scanning = void 0;
+const file_1 = __nccwpck_require__(14);
+const display_stats_1 = __nccwpck_require__(444);
+const secret_scanning = (octokit, owner, repo, branch) => __awaiter(void 0, void 0, void 0, function* () {
+    const { data } = yield octokit.rest.secretScanning.listAlertsForRepo({
+        owner: owner,
+        repo: repo
+    });
+    // this will crate the json file and retrun it  as string as well
+    const msg = file_1.createFile(data, branch);
+    // using the above string to display a message in console
+    display_stats_1.createMessage(msg);
+});
+exports.secret_scanning = secret_scanning;
+//# sourceMappingURL=secret-scanning.js.map
 
 /***/ }),
 

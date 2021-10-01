@@ -1,4 +1,4 @@
-name: 'Comment with Benchmark Result'
+name: 'Github action for alerts statistics'
 # Here we define the inputs, which can be set
 # from the workflow file and are consumed in our code
 inputs:

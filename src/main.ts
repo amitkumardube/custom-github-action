@@ -1,6 +1,7 @@
 import { code_scanning } from './code-scanning';
 import { createMessage, dismiss_total_all, false_positive_all, open_all, use_in_tests_all, wont_fix_all } from './display_stats';
 import { append_to_file, createFile } from './file';
+import { secret_scanning } from './secret-scanning';
 import { state } from './types';
 
 // we need two additional imports.
@@ -62,6 +63,7 @@ async function run() {
     });
     for (let i = 0; i < data.length; i++) {
       branch = data[i].name;
+      // getting code scanning alerts
       await code_scanning(octokit, owner, repo, branch).
       catch(error => core.setFailed("failed to access code scanning alerts" + error.message));
     }
@@ -75,6 +77,10 @@ async function run() {
   let all_stats = supply_total_stats();
   createMessage(all_stats);
   append_to_file(all_stats);
+
+  // getting secret scanning alerts
+  await secret_scanning(octokit, owner, repo, "all").
+      catch(error => core.setFailed("failed to access secret scanning alerts" + error.message));
 
 }
 
