@@ -52,20 +52,15 @@ async function run() {
   // for all of them
   if (branch === 'default') {
     branch = context.payload.repository.default_branch;
-    try {
       /*let { all_branches } = await octokit.request('GET /repos/{owner}/{repo}/branches', {
         owner: owner,
         repo: repo
       });*/      
-      let { all_branches } = await octokit.rest.repos.listBranches({
+      let { data } = await octokit.rest.repos.listBranches({
         owner: owner,
         repo: repo
       });
-      console.log(owner);
-      console.log(repo);
-    } catch { (error) =>
-      console.log(error);
-    }
+      console.log(data);
   }
 
   console.log(branch);

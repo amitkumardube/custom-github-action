@@ -197,21 +197,15 @@ function run() {
         // for all of them
         if (branch === 'default') {
             branch = context.payload.repository.default_branch;
-            try {
-                /*let { all_branches } = await octokit.request('GET /repos/{owner}/{repo}/branches', {
-                  owner: owner,
-                  repo: repo
-                });*/
-                let { all_branches } = yield octokit.rest.repos.listBranches({
-                    owner: owner,
-                    repo: repo
-                });
-                console.log(owner);
-                console.log(repo);
-            }
-            catch (_a) {
-                (error) => console.log(error);
-            }
+            /*let { all_branches } = await octokit.request('GET /repos/{owner}/{repo}/branches', {
+              owner: owner,
+              repo: repo
+            });*/
+            let { data } = yield octokit.rest.repos.listBranches({
+                owner: owner,
+                repo: repo
+            });
+            console.log(data);
         }
         console.log(branch);
         // calling the code_scanning function to trigger code_scanning
