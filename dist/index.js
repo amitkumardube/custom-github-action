@@ -128,7 +128,8 @@ const fs = __importStar(__nccwpck_require__(747));
 const display_stats_1 = __nccwpck_require__(444);
 const createFile = (data, branch) => {
     const json_data = display_stats_1.createJsonFile(data, branch);
-    fs.writeFileSync('stats.json', JSON.stringify(json_data, null, 2));
+    // this is synchronous operation.
+    fs.appendFileSync('stats.json', JSON.stringify(json_data, null, 2));
     return json_data;
 };
 exports.createFile = createFile;
