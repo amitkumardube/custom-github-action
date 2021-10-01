@@ -167,17 +167,19 @@ function run() {
         // (this is an asynchronous function)
         // let data: github.comments;
         if (branch === 'default') {
-            data = yield octokit.rest.codeScanning.listAlertsForRepo({
+            const { output } = yield octokit.rest.codeScanning.listAlertsForRepo({
                 owner: owner,
                 repo: repo
             });
+            data = output;
         }
         else {
-            data = yield octokit.rest.codeScanning.listAlertsForRepo({
+            const { output } = yield octokit.rest.codeScanning.listAlertsForRepo({
                 owner: owner,
                 repo: repo,
                 branch: branch
             });
+            data = output;
         }
         // this will crate the json file and retrun it  as string as well
         const msg = file_1.createFile(data);
