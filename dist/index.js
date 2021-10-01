@@ -314,7 +314,7 @@ const secret_scanning = (octokit, owner, repo, branch) => __awaiter(void 0, void
 exports.secret_scanning = secret_scanning;
 const get_all_pages = (octokit, owner, repo, branch, page) => __awaiter(void 0, void 0, void 0, function* () {
     const all_pages = [];
-    const { result } = yield octokit.rest.secretScanning.listAlertsForRepo({
+    const result = yield octokit.rest.secretScanning.listAlertsForRepo({
         owner: owner,
         repo: repo,
         per_page: 100,
