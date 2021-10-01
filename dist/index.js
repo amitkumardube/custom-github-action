@@ -371,7 +371,8 @@ const get_all_pages = (octokit, owner, repo, branch, page) => __awaiter(void 0, 
     });
     all_pages.push(...result.data);
     const pagination = parse_link_header_1.default(result.headers.link);
-    if (pagination) {
+    console.log(pagination);
+    if (pagination.next) {
         const response = yield get_all_pages(octokit, owner, repo, branch, parseInt(pagination.next.page));
         all_pages.push(...response);
     }
