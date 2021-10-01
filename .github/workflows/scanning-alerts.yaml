@@ -28,6 +28,7 @@ jobs:
         uses: ./
         with:
           token : ${{ secrets.GITHUB_TOKEN }}
+          branch : scanning-alerts
       - name: Upload the results
         uses: actions/upload-artifact@v2
         # this is how you pass arguments to the action,
