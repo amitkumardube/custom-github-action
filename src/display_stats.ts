@@ -1,6 +1,10 @@
 // supplying an export statement
 
-export let open_all, dismiss_total_all, false_positive_all, use_in_tests_all, wont_fix_all : number;
+export let open_all: number
+export let dismiss_total_all: number;
+export let false_positive_all: number;
+export let use_in_tests_all: number;
+export let wont_fix_all: number;
 
 
 export { createMessage };
