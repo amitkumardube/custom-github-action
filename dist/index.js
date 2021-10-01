@@ -31,12 +31,12 @@ let createJsonFile = (data) => {
             open = open + 1;
         }
         else {
-            switch (dismis_reason) {
-                case dismis_reason.toLowerCase() === 'false positive': {
+            switch (dismis_reason.toLowerCase()) {
+                case 'false positive': {
                     false_positive += 1;
                     break;
                 }
-                case dismis_reason.toUpperCase() === 'used in tests': {
+                case 'used in tests': {
                     used_in_tests += 1;
                     break;
                 }
