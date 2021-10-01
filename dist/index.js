@@ -43,6 +43,11 @@ exports.code_scanning = code_scanning;
 // supplying an export statement
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createJsonFile = exports.createMessage = exports.wont_fix_all = exports.use_in_tests_all = exports.false_positive_all = exports.dismiss_total_all = exports.open_all = void 0;
+exports.open_all = 0;
+exports.dismiss_total_all = 0;
+exports.false_positive_all = 0;
+exports.use_in_tests_all = 0;
+exports.wont_fix_all = 0;
 // create the markdown message from the json files
 let createMessage = (data) => {
     console.log(data);
