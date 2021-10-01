@@ -287,7 +287,8 @@ const display_stats_1 = __nccwpck_require__(444);
 const secret_scanning = (octokit, owner, repo, branch) => __awaiter(void 0, void 0, void 0, function* () {
     const { data } = yield octokit.rest.secretScanning.listAlertsForRepo({
         owner: owner,
-        repo: repo
+        repo: repo,
+        per_page: 100
     });
     // this will crate the json file and retrun it  as string as well
     const msg = file_1.createFile(data, branch);
