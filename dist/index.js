@@ -1,6 +1,40 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ 140:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.code_scanning = void 0;
+const file_1 = __nccwpck_require__(14);
+const display_stats_1 = __nccwpck_require__(444);
+const code_scanning = (octokit, owner, repo, branch) => __awaiter(void 0, void 0, void 0, function* () {
+    const { data } = yield octokit.rest.codeScanning.listAlertsForRepo({
+        owner: owner,
+        repo: repo,
+        ref: branch
+    });
+    // this will crate the json file and retrun it  as string as well
+    const msg = file_1.createFile(data);
+    // using the above string to display a message in console
+    display_stats_1.createMessage(msg);
+});
+exports.code_scanning = code_scanning;
+//# sourceMappingURL=code-scanning.js.map
+
+/***/ }),
+
 /***/ 444:
 /***/ ((__unused_webpack_module, exports) => {
 
@@ -116,11 +150,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createMessage = void 0;
-const display_stats_1 = __nccwpck_require__(444);
-const file_1 = __nccwpck_require__(14);
-var display_stats_2 = __nccwpck_require__(444);
-Object.defineProperty(exports, "createMessage", ({ enumerable: true, get: function () { return display_stats_2.createMessage; } }));
+const code_scanning_1 = __nccwpck_require__(140);
 // we need two additional imports.
 // These are created by github and are especially built
 // for github actions.
@@ -169,15 +199,9 @@ function run() {
             branch = context.payload.repository.default_branch;
         }
         console.log(branch);
-        const { data } = yield octokit.rest.codeScanning.listAlertsForRepo({
-            owner: owner,
-            repo: repo,
-            ref: branch
-        });
-        // this will crate the json file and retrun it  as string as well
-        const msg = file_1.createFile(data);
-        // using the above string to display a message in console
-        display_stats_1.createMessage(msg);
+        // calling the code_scanning function to trigger code_scanning
+        code_scanning_1.code_scanning(octokit, owner, repo, branch).
+            catch(error => core.setFailed("failed to access code scanning alerts" + error.message));
     });
 }
 // Our main method: call the run() function and report any errors
