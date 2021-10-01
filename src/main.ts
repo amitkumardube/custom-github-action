@@ -33,7 +33,7 @@ async function run() {
   // is not defined so far - we will come to it later.
   const githubToken = core.getInput("token");
   const branch = core.getInput("branch");
-  let data: any;
+  let data: any[];
 
   //const githubToken = "";
   
