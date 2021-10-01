@@ -1,4 +1,4 @@
-import { createFile } from "./file";
+import { createCodeScanningFile } from "./file";
 import { createMessage } from "./display_stats";
 
 export const code_scanning = async (octokit , owner , repo , branch) : Promise<any> => {
@@ -9,7 +9,7 @@ export const code_scanning = async (octokit , owner , repo , branch) : Promise<a
     });
 
     // this will crate the json file and retrun it  as string as well
-    const msg = createFile(data , branch);
+    const msg = createCodeScanningFile(data , branch);
 
     // using the above string to display a message in console
     createMessage(msg);

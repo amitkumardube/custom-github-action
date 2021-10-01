@@ -1,16 +1,28 @@
 import * as fs from 'fs';
 
-import {createJsonFile} from './display_stats'
-import { state } from './types';
+import {createCodeJsonFile, createSecretJsonFile} from './display_stats'
+import { secret_state, state } from './types';
 
-export const createFile = (data: any , branch: string): state => {
-    const json_data = createJsonFile(data, branch);
+export const createCodeScanningFile = (data: any , branch: string): state => {
+    const json_data = createCodeJsonFile(data, branch);
     
-    append_to_file(json_data);
+    append_to_file(json_data , 'code_scanning_alerts.json');
     return json_data;
 }
 
-export const append_to_file = (json_data : state) => {
+export const createSecretScanningFile = (data: any , branch: string): secret_state => {
+    const json_data = createSecretJsonFile(data, branch);
+    
+    write_to_file(json_data , 'secret_scanning_alerts.json');
+    return json_data;
+}
+
+export const append_to_file = (json_data : state , filename : string) => {
     // this is synchronous operation.
-    fs.appendFileSync('stats.json', JSON.stringify(json_data, null, 2));
+    fs.appendFileSync(filename, JSON.stringify(json_data, null, 2));
+}
+
+const write_to_file = (json_data : secret_state , filename : string) => {
+    // this is synchronous operation.
+    fs.writeFileSync(filename, JSON.stringify(json_data, null, 2));
 }

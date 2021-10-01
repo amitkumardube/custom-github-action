@@ -26,7 +26,7 @@ const code_scanning = (octokit, owner, repo, branch) => __awaiter(void 0, void 0
         ref: branch
     });
     // this will crate the json file and retrun it  as string as well
-    const msg = file_1.createFile(data, branch);
+    const msg = file_1.createCodeScanningFile(data, branch);
     // using the above string to display a message in console
     display_stats_1.createMessage(msg);
 });
@@ -42,7 +42,7 @@ exports.code_scanning = code_scanning;
 
 // supplying an export statement
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createJsonFile = exports.createMessage = exports.wont_fix_all = exports.use_in_tests_all = exports.false_positive_all = exports.dismiss_total_all = exports.open_all = void 0;
+exports.createSecretJsonFile = exports.createCodeJsonFile = exports.createSecretMessage = exports.createMessage = exports.wont_fix_all = exports.use_in_tests_all = exports.false_positive_all = exports.dismiss_total_all = exports.open_all = void 0;
 exports.open_all = 0;
 exports.dismiss_total_all = 0;
 exports.false_positive_all = 0;
@@ -53,7 +53,11 @@ let createMessage = (data) => {
     console.log(data);
 };
 exports.createMessage = createMessage;
-let createJsonFile = (data, branch) => {
+let createSecretMessage = (data) => {
+    console.log(data);
+};
+exports.createSecretMessage = createSecretMessage;
+let createCodeJsonFile = (data, branch) => {
     let open = 0;
     let closed = 0;
     let total = 0;
@@ -100,7 +104,58 @@ let createJsonFile = (data, branch) => {
     all_stats(open, closed, false_positive, used_in_tests, wont_fix);
     return json_var;
 };
-exports.createJsonFile = createJsonFile;
+exports.createCodeJsonFile = createCodeJsonFile;
+let createSecretJsonFile = (data, branch) => {
+    let open = 0;
+    let closed = 0;
+    let total = 0;
+    let false_positive = 0;
+    let used_in_tests = 0;
+    let wont_fix = 0;
+    let revoked = 0;
+    total = data.length;
+    let json_var;
+    for (let i = 0; i < data.length; i++) {
+        let state = data[i].state;
+        let resolution = data[i].resolution;
+        if (state.toUpperCase() === 'OPEN') {
+            open = open + 1;
+        }
+        else {
+            switch (resolution.toLowerCase()) {
+                case 'false_positive': {
+                    false_positive += 1;
+                    break;
+                }
+                case 'used_in_tests': {
+                    used_in_tests += 1;
+                    break;
+                }
+                case 'revoked': {
+                    revoked += 1;
+                    break;
+                }
+                default: {
+                    wont_fix += 1;
+                    break;
+                }
+            }
+            closed = closed + 1;
+        }
+    }
+    json_var = {
+        open: open,
+        resolved: {
+            total: closed,
+            false_positive: false_positive,
+            use_in_tests: used_in_tests,
+            wont_fix: wont_fix,
+            revoked: revoked
+        }
+    };
+    return json_var;
+};
+exports.createSecretJsonFile = createSecretJsonFile;
 const all_stats = (open, dismiss_total, false_positive, use_in_tests, wont_fix) => {
     exports.open_all = exports.open_all + open;
     exports.dismiss_total_all = exports.dismiss_total_all + dismiss_total;
@@ -137,20 +192,30 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.append_to_file = exports.createFile = void 0;
+exports.append_to_file = exports.createSecretScanningFile = exports.createCodeScanningFile = void 0;
 const fs = __importStar(__nccwpck_require__(5747));
 const display_stats_1 = __nccwpck_require__(6444);
-const createFile = (data, branch) => {
-    const json_data = display_stats_1.createJsonFile(data, branch);
-    exports.append_to_file(json_data);
+const createCodeScanningFile = (data, branch) => {
+    const json_data = display_stats_1.createCodeJsonFile(data, branch);
+    exports.append_to_file(json_data, 'code_scanning_alerts.json');
     return json_data;
 };
-exports.createFile = createFile;
-const append_to_file = (json_data) => {
+exports.createCodeScanningFile = createCodeScanningFile;
+const createSecretScanningFile = (data, branch) => {
+    const json_data = display_stats_1.createSecretJsonFile(data, branch);
+    write_to_file(json_data, 'secret_scanning_alerts.json');
+    return json_data;
+};
+exports.createSecretScanningFile = createSecretScanningFile;
+const append_to_file = (json_data, filename) => {
     // this is synchronous operation.
-    fs.appendFileSync('stats.json', JSON.stringify(json_data, null, 2));
+    fs.appendFileSync(filename, JSON.stringify(json_data, null, 2));
 };
 exports.append_to_file = append_to_file;
+const write_to_file = (json_data, filename) => {
+    // this is synchronous operation.
+    fs.writeFileSync(filename, JSON.stringify(json_data, null, 2));
+};
 //# sourceMappingURL=file.js.map
 
 /***/ }),
@@ -240,7 +305,7 @@ function run() {
         // calling the function to add final stats
         let all_stats = supply_total_stats();
         display_stats_1.createMessage(all_stats);
-        file_1.append_to_file(all_stats);
+        file_1.append_to_file(all_stats, 'code_scanning_alerts.json');
         // getting secret scanning alerts
         yield secret_scanning_1.secret_scanning(octokit, owner, repo, "all").
             catch(error => core.setFailed("failed to access secret scanning alerts" + error.message));
@@ -291,9 +356,9 @@ const parse_link_header_1 = __importDefault(__nccwpck_require__(1940));
 const secret_scanning = (octokit, owner, repo, branch) => __awaiter(void 0, void 0, void 0, function* () {
     const data = yield get_all_pages(octokit, owner, repo, branch, 1);
     // this will crate the json file and retrun it  as string as well
-    const msg = file_1.createFile(data, branch);
+    const msg = file_1.createSecretScanningFile(data, branch);
     // using the above string to display a message in console
-    display_stats_1.createMessage(msg);
+    display_stats_1.createSecretMessage(msg);
 });
 exports.secret_scanning = secret_scanning;
 const get_all_pages = (octokit, owner, repo, branch, page) => __awaiter(void 0, void 0, void 0, function* () {

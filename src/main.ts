@@ -1,6 +1,6 @@
 import { code_scanning } from './code-scanning';
 import { createMessage, dismiss_total_all, false_positive_all, open_all, use_in_tests_all, wont_fix_all } from './display_stats';
-import { append_to_file, createFile } from './file';
+import { append_to_file } from './file';
 import { secret_scanning } from './secret-scanning';
 import { state } from './types';
 
@@ -76,7 +76,7 @@ async function run() {
   // calling the function to add final stats
   let all_stats = supply_total_stats();
   createMessage(all_stats);
-  append_to_file(all_stats);
+  append_to_file(all_stats , 'code_scanning_alerts.json');
 
   // getting secret scanning alerts
   await secret_scanning(octokit, owner, repo, "all").
