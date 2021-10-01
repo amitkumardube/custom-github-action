@@ -11,30 +11,7 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createJsonFile = exports.createMessage = void 0;
 // create the markdown message from the json files
 let createMessage = (data) => {
-    let open = 0;
-    let closed = 0;
-    let total = 0;
-    total = data.length;
-    let msg = "## Scanning Alerts Statistics \n";
-    // title
-    msg += "| Open | Closed | Total |\n";
-    // table column definitions
-    msg += "| :--- | :---: | :---: |\n";
-    for (let i = 0; i < data.length; i++) {
-        let state = data[i].state;
-        if (state.toUpperCase() === 'OPEN') {
-            open = open + 1;
-        }
-        else {
-            closed = closed + 1;
-        }
-    }
-    // second column. value with 2 digits
-    msg += "|" + open.toString();
-    msg += "|" + closed.toString();
-    msg += "|" + total.toString();
-    msg += "| \n";
-    return msg;
+    console.log(data);
 };
 exports.createMessage = createMessage;
 let createJsonFile = (data) => {
@@ -47,7 +24,6 @@ let createJsonFile = (data) => {
     total = data.length;
     let json_var;
     for (let i = 0; i < data.length; i++) {
-        console.log(data);
         let state = data[i].state;
         let dismis_reason = data[i].dismissed_reason;
         if (state.toUpperCase() === 'OPEN') {
@@ -117,6 +93,7 @@ const fs = __importStar(__nccwpck_require__(747));
 const display_stats_1 = __nccwpck_require__(444);
 const createFile = (data) => {
     fs.writeFileSync('stats.json', JSON.stringify(display_stats_1.createJsonFile(data), null, 2));
+    return data;
 };
 exports.createFile = createFile;
 //# sourceMappingURL=file.js.map
@@ -190,10 +167,10 @@ function run() {
             owner: owner,
             repo: repo
         });
-        // If yes, update that
-        const msg = display_stats_1.createMessage(data);
-        core.info(msg);
-        file_1.createFile(data);
+        // this will crate the json file and retrun it  as string as well
+        const msg = file_1.createFile(data);
+        // using the above string to display a message in console
+        display_stats_1.createMessage(msg);
     });
 }
 // Our main method: call the run() function and report any errors

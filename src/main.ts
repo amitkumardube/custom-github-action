@@ -58,14 +58,15 @@ async function run() {
     });
   
   
-  // If yes, update that
+    // this will crate the json file and retrun it  as string as well
+  const msg = createFile(data);
 
-  const msg = createMessage(data);
+    // using the above string to display a message in console
+  createMessage(msg);
 
-  core.info(msg);
+  
 
-  createFile(data);
-
+  
 }
 
 // Our main method: call the run() function and report any errors
