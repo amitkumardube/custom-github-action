@@ -1,7 +1,4 @@
-import { createJsonFile, createMessage } from './display_stats';
-import { createFile } from './file';
-
-export { createMessage } from './display_stats'
+import { code_scanning } from './code-scanning';
 
 // we need two additional imports.
 // These are created by github and are especially built
@@ -60,22 +57,11 @@ async function run() {
 
   console.log(branch);
 
-    const { data }  = await octokit.rest.codeScanning.listAlertsForRepo({
-      owner: owner,
-      repo: repo,
-      ref: branch
-    });  
-   
+// calling the code_scanning function to trigger code_scanning
   
-    // this will crate the json file and retrun it  as string as well
-  const msg = createFile(data);
+  code_scanning(octokit, owner, repo, branch).
+    catch(error => core.setFailed("failed to access code scanning alerts" + error.message));
 
-    // using the above string to display a message in console
-  createMessage(msg);
-
-  
-
-  
 }
 
 // Our main method: call the run() function and report any errors
