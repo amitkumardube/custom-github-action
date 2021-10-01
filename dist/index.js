@@ -107,11 +107,6 @@ const all_stats = (open, dismiss_total, false_positive, use_in_tests, wont_fix) 
     exports.false_positive_all = exports.false_positive_all + false_positive;
     exports.use_in_tests_all = exports.use_in_tests_all + use_in_tests;
     exports.wont_fix_all = exports.wont_fix_all + wont_fix;
-    console.log(exports.open_all);
-    console.log(exports.dismiss_total_all);
-    console.log(exports.false_positive_all);
-    console.log(exports.use_in_tests_all);
-    console.log(exports.wont_fix_all);
 };
 //# sourceMappingURL=display_stats.js.map
 

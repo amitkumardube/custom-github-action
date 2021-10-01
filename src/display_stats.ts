@@ -73,9 +73,4 @@ const all_stats = (open: number, dismiss_total: number, false_positive: number, 
     false_positive_all = false_positive_all + false_positive;
     use_in_tests_all = use_in_tests_all + use_in_tests;
     wont_fix_all = wont_fix_all + wont_fix; 
-    console.log(open_all);
-    console.log(dismiss_total_all);
-    console.log(false_positive_all);
-    console.log(use_in_tests_all);
-    console.log(wont_fix_all);
 }
