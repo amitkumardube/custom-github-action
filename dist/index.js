@@ -172,7 +172,7 @@ function run() {
         const { data } = yield octokit.rest.codeScanning.listAlertsForRepo({
             owner: owner,
             repo: repo,
-            branch: branch
+            ref: branch
         });
         // this will crate the json file and retrun it  as string as well
         const msg = file_1.createFile(data);

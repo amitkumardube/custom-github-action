@@ -28,7 +28,7 @@ jobs:
         uses: ./
         with:
           token : ${{ secrets.GITHUB_TOKEN }}
-          branch : refs/heads/scanning-alerts
+          branch : refs/heads/pr-build
       - name: Upload the results
         uses: actions/upload-artifact@v2
         # this is how you pass arguments to the action,

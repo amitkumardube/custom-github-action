@@ -63,7 +63,7 @@ async function run() {
     const { data }  = await octokit.rest.codeScanning.listAlertsForRepo({
       owner: owner,
       repo: repo,
-      branch: branch
+      ref: branch
     });  
    
   
