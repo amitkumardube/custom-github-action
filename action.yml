@@ -15,6 +15,7 @@ inputs:
   branch:
     description: 'branch for code scanning alerts'
     required: false
+    default: 'none'
 # We specify the created dist/index.js file
 # as the entrypoint of our action
 runs:
