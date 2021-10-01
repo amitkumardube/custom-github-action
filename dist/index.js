@@ -206,7 +206,8 @@ function run() {
                     owner: owner,
                     repo: repo
                 });
-                console.log(all_branches);
+                console.log(owner);
+                console.log(repo);
             }
             catch (_a) {
                 (error) => console.log(error);

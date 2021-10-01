@@ -61,7 +61,8 @@ async function run() {
         owner: owner,
         repo: repo
       });
-      console.log(all_branches);
+      console.log(owner);
+      console.log(repo);
     } catch { (error) =>
       console.log(error);
     }
