@@ -33,8 +33,8 @@ async function run() {
   // is not defined so far - we will come to it later.
   const githubToken = core.getInput("token");
   const branch = core.getInput("branch");
+  let data: any;
 
-  console.log(branch);
   //const githubToken = "";
   
   // the context does for example also include information
@@ -55,11 +55,18 @@ async function run() {
   // (this is an asynchronous function)
 
  // let data: github.comments;
-    const { data } = await octokit.rest.codeScanning.listAlertsForRepo({
+  if (branch === 'default') {
+    data  = await octokit.rest.codeScanning.listAlertsForRepo({
       owner: owner,
-      repo : repo
+      repo: repo
     });
-  
+  } else {
+    data  = await octokit.rest.codeScanning.listAlertsForRepo({
+      owner: owner,
+      repo: repo,
+      branch: branch
+    });    
+  }
   
     // this will crate the json file and retrun it  as string as well
   const msg = createFile(data);

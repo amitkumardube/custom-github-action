@@ -150,7 +150,7 @@ function run() {
         // is not defined so far - we will come to it later.
         const githubToken = core.getInput("token");
         const branch = core.getInput("branch");
-        console.log(branch);
+        let data;
         //const githubToken = "";
         // the context does for example also include information
         // in the pull request or repository we are issued from
@@ -166,10 +166,19 @@ function run() {
         // Get all comments we currently have...
         // (this is an asynchronous function)
         // let data: github.comments;
-        const { data } = yield octokit.rest.codeScanning.listAlertsForRepo({
-            owner: owner,
-            repo: repo
-        });
+        if (branch === 'default') {
+            data = yield octokit.rest.codeScanning.listAlertsForRepo({
+                owner: owner,
+                repo: repo
+            });
+        }
+        else {
+            data = yield octokit.rest.codeScanning.listAlertsForRepo({
+                owner: owner,
+                repo: repo,
+                branch: branch
+            });
+        }
         // this will crate the json file and retrun it  as string as well
         const msg = file_1.createFile(data);
         // using the above string to display a message in console
