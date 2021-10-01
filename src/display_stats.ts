@@ -21,6 +21,7 @@ export let createJsonFile = (data: any) : state => {
     for (let i = 0; i < data.length; i++) {
         let state = data[i].state;
         let dismis_reason = data[i].dismissed_reason;
+        console.log(dismis_reason);
 
         if (state.toUpperCase() === 'OPEN') {
             open = open + 1;
