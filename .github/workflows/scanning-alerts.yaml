@@ -27,7 +27,7 @@ jobs:
         # Use the action defined in this repository
         uses: ./
         with:
-          token : ${{ secrets.GITHUB_TOKEN }}
+          token : ${{ secrets.PAT }}
       - name: Upload the results
         uses: actions/upload-artifact@v2
         # this is how you pass arguments to the action,
