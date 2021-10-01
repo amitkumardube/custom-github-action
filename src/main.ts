@@ -1,4 +1,7 @@
 import { code_scanning } from './code-scanning';
+import { createMessage, dismiss_total_all, false_positive_all, open_all, use_in_tests_all, wont_fix_all } from './display_stats';
+import { append_to_file, createFile } from './file';
+import { state } from './types';
 
 // we need two additional imports.
 // These are created by github and are especially built
@@ -59,18 +62,38 @@ async function run() {
     });
     for (let i = 0; i < data.length; i++) {
       branch = data[i].name;
-      code_scanning(octokit, owner, repo, branch).
+      await code_scanning(octokit, owner, repo, branch).
       catch(error => core.setFailed("failed to access code scanning alerts" + error.message));
     }
   } else {
     // means we will only focus on the branch supplied by user as input
-      code_scanning(octokit, owner, repo, branch).
+      await code_scanning(octokit, owner, repo, branch).
       catch(error => core.setFailed("failed to access code scanning alerts" + error.message));    
   }
+
+  // calling the function to add final stats
+  let all_stats = supply_total_stats();
+  createMessage(all_stats);
+  append_to_file(all_stats);
 
 }
 
 // Our main method: call the run() function and report any errors
 run()
   .catch(error => core.setFailed("Workflow failed! " + error.message));
+
+const supply_total_stats = () : state => {
+      const json_var = {
+        branch: 'all',
+        open: open_all,
+        dismissed: {
+            total : dismiss_total_all,
+            false_positive: false_positive_all,
+            use_in_tests: use_in_tests_all,
+            wont_fix : wont_fix_all
+        }
+  }
+  
+  return json_var;
+}
 

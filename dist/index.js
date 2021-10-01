@@ -42,7 +42,7 @@ exports.code_scanning = code_scanning;
 
 // supplying an export statement
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createJsonFile = exports.createMessage = void 0;
+exports.createJsonFile = exports.createMessage = exports.wont_fix_all = exports.use_in_tests_all = exports.false_positive_all = exports.dismiss_total_all = exports.open_all = void 0;
 // create the markdown message from the json files
 let createMessage = (data) => {
     console.log(data);
@@ -91,9 +91,18 @@ let createJsonFile = (data, branch) => {
             wont_fix: wont_fix
         }
     };
+    // calling the all_stats function to keep the findings count.
+    all_stats(open, closed, false_positive, used_in_tests, wont_fix);
     return json_var;
 };
 exports.createJsonFile = createJsonFile;
+const all_stats = (open, dismiss_total, false_positive, use_in_tests, wont_fix) => {
+    exports.open_all = exports.open_all + open;
+    exports.dismiss_total_all = exports.dismiss_total_all + dismiss_total;
+    exports.false_positive_all = exports.false_positive_all + false_positive;
+    exports.use_in_tests_all = exports.use_in_tests_all + use_in_tests;
+    exports.wont_fix_all = exports.wont_fix_all + wont_fix;
+};
 //# sourceMappingURL=display_stats.js.map
 
 /***/ }),
@@ -123,16 +132,20 @@ var __importStar = (this && this.__importStar) || function (mod) {
     return result;
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-exports.createFile = void 0;
+exports.append_to_file = exports.createFile = void 0;
 const fs = __importStar(__nccwpck_require__(747));
 const display_stats_1 = __nccwpck_require__(444);
 const createFile = (data, branch) => {
     const json_data = display_stats_1.createJsonFile(data, branch);
-    // this is synchronous operation.
-    fs.appendFileSync('stats.json', JSON.stringify(json_data, null, 2));
+    exports.append_to_file(json_data);
     return json_data;
 };
 exports.createFile = createFile;
+const append_to_file = (json_data) => {
+    // this is synchronous operation.
+    fs.appendFileSync('stats.json', JSON.stringify(json_data, null, 2));
+};
+exports.append_to_file = append_to_file;
 //# sourceMappingURL=file.js.map
 
 /***/ }),
@@ -153,6 +166,8 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const code_scanning_1 = __nccwpck_require__(140);
+const display_stats_1 = __nccwpck_require__(444);
+const file_1 = __nccwpck_require__(14);
 // we need two additional imports.
 // These are created by github and are especially built
 // for github actions.
@@ -206,20 +221,37 @@ function run() {
             });
             for (let i = 0; i < data.length; i++) {
                 branch = data[i].name;
-                code_scanning_1.code_scanning(octokit, owner, repo, branch).
+                yield code_scanning_1.code_scanning(octokit, owner, repo, branch).
                     catch(error => core.setFailed("failed to access code scanning alerts" + error.message));
             }
         }
         else {
             // means we will only focus on the branch supplied by user as input
-            code_scanning_1.code_scanning(octokit, owner, repo, branch).
+            yield code_scanning_1.code_scanning(octokit, owner, repo, branch).
                 catch(error => core.setFailed("failed to access code scanning alerts" + error.message));
         }
+        // calling the function to add final stats
+        let all_stats = supply_total_stats();
+        display_stats_1.createMessage(all_stats);
+        file_1.append_to_file(all_stats);
     });
 }
 // Our main method: call the run() function and report any errors
 run()
     .catch(error => core.setFailed("Workflow failed! " + error.message));
+const supply_total_stats = () => {
+    const json_var = {
+        branch: 'all',
+        open: display_stats_1.open_all,
+        dismissed: {
+            total: display_stats_1.dismiss_total_all,
+            false_positive: display_stats_1.false_positive_all,
+            use_in_tests: display_stats_1.use_in_tests_all,
+            wont_fix: display_stats_1.wont_fix_all
+        }
+    };
+    return json_var;
+};
 //# sourceMappingURL=main.js.map
 
 /***/ }),

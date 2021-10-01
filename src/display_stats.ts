@@ -1,5 +1,8 @@
 // supplying an export statement
 
+export let open_all, dismiss_total_all, false_positive_all, use_in_tests_all, wont_fix_all : number;
+
+
 export { createMessage };
     import {state} from './types'
 
@@ -54,7 +57,16 @@ export let createJsonFile = (data: any , branch : string) : state => {
             wont_fix : wont_fix
         }
     }
-
+    // calling the all_stats function to keep the findings count.
+    all_stats(open , closed, false_positive , used_in_tests , wont_fix)
     return json_var;
 
+}
+
+const all_stats = (open: number, dismiss_total: number, false_positive: number, use_in_tests: number, wont_fix: number) => {
+    open_all = open_all + open;
+    dismiss_total_all = dismiss_total_all + dismiss_total;
+    false_positive_all = false_positive_all + false_positive;
+    use_in_tests_all = use_in_tests_all + use_in_tests;
+    wont_fix_all = wont_fix_all + wont_fix; 
 }
