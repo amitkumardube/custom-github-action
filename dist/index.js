@@ -168,6 +168,7 @@ function run() {
         if (branch === 'default') {
             branch = context.payload.repository.default_branch;
         }
+        console.log(branch);
         const { data } = yield octokit.rest.codeScanning.listAlertsForRepo({
             owner: owner,
             repo: repo,

@@ -58,6 +58,8 @@ async function run() {
     branch = context.payload.repository.default_branch;
   }
 
+  console.log(branch);
+
     const { data }  = await octokit.rest.codeScanning.listAlertsForRepo({
       owner: owner,
       repo: repo,
