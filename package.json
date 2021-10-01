@@ -9,7 +9,6 @@
     "test": "jest --verbose",
     "coverage": "jest --coverage"
   },
-
   "repository": {
     "type": "git",
     "url": "git+https://github.com/amitkumardube/custom-github-action.git"
@@ -24,7 +23,8 @@
   "dependencies": {
     "@actions/core": "^1.4.0",
     "@actions/github": "^5.0.0",
-    "@octokit/rest": "^18.9.0"
+    "@octokit/rest": "^18.9.0",
+    "parse-link-header": "^1.0.1"
   },
   "devDependencies": {
     "@types/jest": "^27.0.1",
