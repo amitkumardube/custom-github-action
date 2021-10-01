@@ -196,21 +196,23 @@ function run() {
         // In this case, we need to run this process for all the branches to get code scanning alerts 
         // for all of them
         if (branch === 'default') {
-            branch = context.payload.repository.default_branch;
-            /*let { all_branches } = await octokit.request('GET /repos/{owner}/{repo}/branches', {
-              owner: owner,
-              repo: repo
-            });*/
+            //branch = context.payload.repository.default_branch;
+            // get the list of all the branches in the repo
             let { data } = yield octokit.rest.repos.listBranches({
                 owner: owner,
                 repo: repo
             });
-            console.log(data);
+            for (let i = 0; i < data.length; i++) {
+                branch = data[i].name;
+                code_scanning_1.code_scanning(octokit, owner, repo, branch).
+                    catch(error => core.setFailed("failed to access code scanning alerts" + error.message));
+            }
         }
-        console.log(branch);
-        // calling the code_scanning function to trigger code_scanning
-        code_scanning_1.code_scanning(octokit, owner, repo, branch).
-            catch(error => core.setFailed("failed to access code scanning alerts" + error.message));
+        else {
+            // means we will only focus on the branch supplied by user as input
+            code_scanning_1.code_scanning(octokit, owner, repo, branch).
+                catch(error => core.setFailed("failed to access code scanning alerts" + error.message));
+        }
     });
 }
 // Our main method: call the run() function and report any errors
