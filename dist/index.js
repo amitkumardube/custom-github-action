@@ -26,7 +26,7 @@ const code_scanning = (octokit, owner, repo, branch) => __awaiter(void 0, void 0
         ref: branch
     });
     // this will crate the json file and retrun it  as string as well
-    const msg = file_1.createFile(data);
+    const msg = file_1.createFile(data, branch);
     // using the above string to display a message in console
     display_stats_1.createMessage(msg);
 });
@@ -48,7 +48,7 @@ let createMessage = (data) => {
     console.log(data);
 };
 exports.createMessage = createMessage;
-let createJsonFile = (data) => {
+let createJsonFile = (data, branch) => {
     let open = 0;
     let closed = 0;
     let total = 0;
@@ -82,6 +82,7 @@ let createJsonFile = (data) => {
         }
     }
     json_var = {
+        branch: branch,
         open: open,
         dismissed: {
             total: closed,
@@ -125,8 +126,8 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.createFile = void 0;
 const fs = __importStar(__nccwpck_require__(747));
 const display_stats_1 = __nccwpck_require__(444);
-const createFile = (data) => {
-    const json_data = display_stats_1.createJsonFile(data);
+const createFile = (data, branch) => {
+    const json_data = display_stats_1.createJsonFile(data, branch);
     fs.writeFileSync('stats.json', JSON.stringify(json_data, null, 2));
     return json_data;
 };

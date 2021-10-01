@@ -9,7 +9,7 @@ let createMessage = (data: state) => {
     console.log(data);
 }
 
-export let createJsonFile = (data: any) : state => {
+export let createJsonFile = (data: any , branch : string) : state => {
     let open = 0;
     let closed = 0;
     let total = 0;
@@ -45,6 +45,7 @@ export let createJsonFile = (data: any) : state => {
     }
     
     json_var = {
+        branch: branch,
         open: open,
         dismissed: {
             total : closed,

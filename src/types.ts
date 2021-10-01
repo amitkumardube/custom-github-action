@@ -1,4 +1,5 @@
 export type state = {
+    branch: string;
     open: number;
     dismissed: dismissed_reason;
 }
