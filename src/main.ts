@@ -53,14 +53,14 @@ async function run() {
   if (branch === 'default') {
     branch = context.payload.repository.default_branch;
     try {
-      let { all_branches } = await octokit.request('GET /repos/{owner}/{repo}/branches', {
+      /*let { all_branches } = await octokit.request('GET /repos/{owner}/{repo}/branches', {
         owner: owner,
         repo: repo
-      });      
-      /*let { all_branches } = await octokit.rest.repos.listBranches({
+      });*/      
+      let { all_branches } = await octokit.rest.repos.listBranches({
         owner: owner,
         repo: repo
-      });*/
+      });
       console.log(all_branches);
     } catch { (error) =>
       console.log(error);
