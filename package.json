@@ -29,6 +29,7 @@
   "devDependencies": {
     "@types/jest": "^27.0.1",
     "@types/node": "^16.4.11",
+    "@types/parse-link-header": "^1.0.0",
     "@vercel/ncc": "^0.29.0",
     "jest": "^27.0.6",
     "prettier": "^2.3.2",
