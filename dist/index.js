@@ -149,6 +149,8 @@ function run() {
         // get the inputs of the action. The "token" input
         // is not defined so far - we will come to it later.
         const githubToken = core.getInput("token");
+        const branch = core.getInput("branch");
+        console.log(branch);
         //const githubToken = "";
         // the context does for example also include information
         // in the pull request or repository we are issued from
