@@ -32,8 +32,7 @@ async function run() {
   // get the inputs of the action. The "token" input
   // is not defined so far - we will come to it later.
   const githubToken = core.getInput("token");
-  const branch = core.getInput("branch");
-  let data: any[];
+  let branch = core.getInput("branch");
 
   //const githubToken = "";
   
@@ -56,19 +55,15 @@ async function run() {
 
  // let data: github.comments;
   if (branch === 'default') {
-    const { output } = await octokit.rest.codeScanning.listAlertsForRepo({
-      owner: owner,
-      repo: repo
-    });
-    data = output;
-  } else {
-    const { output }  = await octokit.rest.codeScanning.listAlertsForRepo({
+    branch = context.event.repo.default_branch;
+  }
+
+    const { data }  = await octokit.rest.codeScanning.listAlertsForRepo({
       owner: owner,
       repo: repo,
       branch: branch
     });  
-    data = output;
-  }
+   
   
     // this will crate the json file and retrun it  as string as well
   const msg = createFile(data);

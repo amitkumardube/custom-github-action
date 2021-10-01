@@ -149,8 +149,7 @@ function run() {
         // get the inputs of the action. The "token" input
         // is not defined so far - we will come to it later.
         const githubToken = core.getInput("token");
-        const branch = core.getInput("branch");
-        let data;
+        let branch = core.getInput("branch");
         //const githubToken = "";
         // the context does for example also include information
         // in the pull request or repository we are issued from
@@ -167,20 +166,13 @@ function run() {
         // (this is an asynchronous function)
         // let data: github.comments;
         if (branch === 'default') {
-            const { output } = yield octokit.rest.codeScanning.listAlertsForRepo({
-                owner: owner,
-                repo: repo
-            });
-            data = output;
+            branch = context.event.repo.default_branch;
         }
-        else {
-            const { output } = yield octokit.rest.codeScanning.listAlertsForRepo({
-                owner: owner,
-                repo: repo,
-                branch: branch
-            });
-            data = output;
-        }
+        const { data } = yield octokit.rest.codeScanning.listAlertsForRepo({
+            owner: owner,
+            repo: repo,
+            branch: branch
+        });
         // this will crate the json file and retrun it  as string as well
         const msg = file_1.createFile(data);
         // using the above string to display a message in console
