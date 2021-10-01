@@ -192,11 +192,16 @@ function run() {
         // You can look up the REST interface
         // here: https://octokit.github.io/rest.js/v18
         const octokit = github.getOctokit(githubToken);
-        // Get all comments we currently have...
-        // (this is an asynchronous function)
-        // let data: github.comments;
+        // if branch is default that implies that user didn't pass any branch as argument
+        // In this case, we need to run this process for all the branches to get code scanning alerts 
+        // for all of them
         if (branch === 'default') {
             branch = context.payload.repository.default_branch;
+            const { all_branches } = yield octokit.rest.repos.listBranches({
+                owner: owner,
+                repo: repo
+            });
+            console.log(all_branches);
         }
         console.log(branch);
         // calling the code_scanning function to trigger code_scanning
