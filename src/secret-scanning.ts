@@ -26,7 +26,7 @@ const get_all_pages = async (octokit, owner, repo, branch, page: number) => {
     const pagination = parse(result.headers.link)!;
     console.log(pagination);
 
-    if (pagination.next) {
+    if (pagination && pagination.next) {
         const response = await get_all_pages(octokit, owner, repo, branch, parseInt(pagination.next.page));
         all_pages.push(...response);
     }
