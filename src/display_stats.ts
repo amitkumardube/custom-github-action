@@ -47,6 +47,7 @@ export let createJsonFile = (data: any) : state => {
     total = data.length;
     let json_var: state ;
     for (let i = 0; i < data.length; i++) {
+        console.log(data);
         let state = data[i].state;
         let dismis_reason = data[i].dismissed_reason;
 

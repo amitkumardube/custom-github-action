@@ -47,6 +47,7 @@ let createJsonFile = (data) => {
     total = data.length;
     let json_var;
     for (let i = 0; i < data.length; i++) {
+        console.log(data);
         let state = data[i].state;
         let dismis_reason = data[i].dismissed_reason;
         if (state.toUpperCase() === 'OPEN') {
