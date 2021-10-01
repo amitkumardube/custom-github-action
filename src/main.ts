@@ -55,7 +55,7 @@ async function run() {
 
  // let data: github.comments;
   if (branch === 'default') {
-    console.log(context);
+    branch = context.payload.repository.default_branch;
   }
 
     const { data }  = await octokit.rest.codeScanning.listAlertsForRepo({

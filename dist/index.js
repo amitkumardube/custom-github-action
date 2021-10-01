@@ -166,7 +166,7 @@ function run() {
         // (this is an asynchronous function)
         // let data: github.comments;
         if (branch === 'default') {
-            console.log(context);
+            branch = context.payload.repository.default_branch;
         }
         const { data } = yield octokit.rest.codeScanning.listAlertsForRepo({
             owner: owner,
