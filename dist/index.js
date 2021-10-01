@@ -92,8 +92,9 @@ exports.createFile = void 0;
 const fs = __importStar(__nccwpck_require__(747));
 const display_stats_1 = __nccwpck_require__(444);
 const createFile = (data) => {
-    fs.writeFileSync('stats.json', JSON.stringify(display_stats_1.createJsonFile(data), null, 2));
-    return data;
+    const json_data = display_stats_1.createJsonFile(data);
+    fs.writeFileSync('stats.json', JSON.stringify(json_data, null, 2));
+    return json_data;
 };
 exports.createFile = createFile;
 //# sourceMappingURL=file.js.map

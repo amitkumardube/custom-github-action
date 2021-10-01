@@ -1,8 +1,10 @@
 import * as fs from 'fs';
 
 import {createJsonFile} from './display_stats'
+import { state } from './types';
 
-export const createFile = (data : any) :string => {
-    fs.writeFileSync('stats.json', JSON.stringify(createJsonFile(data), null, 2));
-    return data;
+export const createFile = (data: any): state => {
+    const json_data = createJsonFile(data)
+    fs.writeFileSync('stats.json', JSON.stringify(json_data, null, 2));
+    return json_data;
 }

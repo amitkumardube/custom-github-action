@@ -5,7 +5,7 @@ export { createMessage };
 
 // create the markdown message from the json files
 
-let createMessage = (data: string) => {
+let createMessage = (data: state) => {
     console.log(data);
 }
 
