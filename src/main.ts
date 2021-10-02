@@ -54,6 +54,9 @@ async function run() {
   // if branch is default that implies that user didn't pass any branch as argument
   // In this case, we need to run this process for all the branches to get code scanning alerts 
   // for all of them
+  
+  console.log("## Displaying Code Scanning Statistics\n\n");
+
   if (branch === 'default') {
     //branch = context.payload.repository.default_branch;
     // get the list of all the branches in the repo
@@ -76,11 +79,17 @@ async function run() {
   // calling the function to add final stats
   let all_stats = supply_total_stats();
   createMessage(all_stats);
-  append_to_file(all_stats , 'code_scanning_alerts.json');
+  append_to_file(all_stats, 'code_scanning_alerts.json');
+  
+  console.log("## End of Displaying Code Scanning Statistics \n\n");
+
+  console.log("## Displaying Secret Scanning Statistics \n\n");
 
   // getting secret scanning alerts
   await secret_scanning(octokit, owner, repo, "all").
-      catch(error => core.setFailed("failed to access secret scanning alerts" + error.message));
+    catch(error => core.setFailed("failed to access secret scanning alerts" + error.message));
+  
+  console.log("## End of Displaying Secret Scanning Statistics \n\n");
 
 }
 

@@ -15,22 +15,40 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 exports.code_scanning = void 0;
 const file_1 = __nccwpck_require__(4014);
 const display_stats_1 = __nccwpck_require__(6444);
+const parse_link_header_1 = __importDefault(__nccwpck_require__(1940));
 const code_scanning = (octokit, owner, repo, branch) => __awaiter(void 0, void 0, void 0, function* () {
-    const { data } = yield octokit.rest.codeScanning.listAlertsForRepo({
-        owner: owner,
-        repo: repo,
-        ref: branch
-    });
+    const data = yield get_all_pages(octokit, owner, repo, branch, 1);
     // this will crate the json file and retrun it  as string as well
     const msg = file_1.createCodeScanningFile(data, branch);
     // using the above string to display a message in console
     display_stats_1.createMessage(msg);
 });
 exports.code_scanning = code_scanning;
+const get_all_pages = (octokit, owner, repo, branch, page) => __awaiter(void 0, void 0, void 0, function* () {
+    const all_pages = [];
+    const result = yield octokit.rest.codeScanning.listAlertsForRepo({
+        owner: owner,
+        repo: repo,
+        ref: branch,
+        per_page: 100,
+        page: page
+    });
+    all_pages.push(...result.data);
+    const pagination = parse_link_header_1.default(result.headers.link);
+    //console.log(pagination);
+    if (pagination && pagination.next) {
+        const response = yield get_all_pages(octokit, owner, repo, branch, parseInt(pagination.next.page));
+        all_pages.push(...response);
+    }
+    return all_pages;
+});
 //# sourceMappingURL=code-scanning.js.map
 
 /***/ }),
@@ -283,6 +301,7 @@ function run() {
         // if branch is default that implies that user didn't pass any branch as argument
         // In this case, we need to run this process for all the branches to get code scanning alerts 
         // for all of them
+        console.log("## Displaying Code Scanning Statistics\n\n");
         if (branch === 'default') {
             //branch = context.payload.repository.default_branch;
             // get the list of all the branches in the repo
@@ -306,9 +325,12 @@ function run() {
         let all_stats = supply_total_stats();
         display_stats_1.createMessage(all_stats);
         file_1.append_to_file(all_stats, 'code_scanning_alerts.json');
+        console.log("## End of Displaying Code Scanning Statistics \n\n");
+        console.log("## Displaying Secret Scanning Statistics \n\n");
         // getting secret scanning alerts
         yield secret_scanning_1.secret_scanning(octokit, owner, repo, "all").
             catch(error => core.setFailed("failed to access secret scanning alerts" + error.message));
+        console.log("## End of Displaying Secret Scanning Statistics \n\n");
     });
 }
 // Our main method: call the run() function and report any errors
@@ -371,7 +393,7 @@ const get_all_pages = (octokit, owner, repo, branch, page) => __awaiter(void 0, 
     });
     all_pages.push(...result.data);
     const pagination = parse_link_header_1.default(result.headers.link);
-    console.log(pagination);
+    //console.log(pagination);
     if (pagination && pagination.next) {
         const response = yield get_all_pages(octokit, owner, repo, branch, parseInt(pagination.next.page));
         all_pages.push(...response);

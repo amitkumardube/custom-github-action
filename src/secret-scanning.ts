@@ -1,5 +1,5 @@
 import { createSecretScanningFile } from "./file";
-import { createMessage, createSecretMessage } from "./display_stats";
+import {  createSecretMessage } from "./display_stats";
 import parse from 'parse-link-header'
 
 export const secret_scanning = async (octokit, owner, repo, branch): Promise<any> => {
@@ -24,7 +24,7 @@ const get_all_pages = async (octokit, owner, repo, branch, page: number) => {
     all_pages.push(...result.data)
 
     const pagination = parse(result.headers.link)!;
-    console.log(pagination);
+    //console.log(pagination);
 
     if (pagination && pagination.next) {
         const response = await get_all_pages(octokit, owner, repo, branch, parseInt(pagination.next.page));
