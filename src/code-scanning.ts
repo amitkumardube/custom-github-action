@@ -23,6 +23,7 @@ const get_all_pages = async (octokit, owner, repo, branch, page: number) => {
         per_page: 100,
         page: page
     });
+
     all_pages.push(...result.data)
 
     const pagination = parse(result.headers.link)!;

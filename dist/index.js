@@ -313,13 +313,20 @@ function run() {
                 branch = data[i].name;
                 // getting code scanning alerts
                 yield code_scanning_1.code_scanning(octokit, owner, repo, branch).
-                    catch(error => core.setFailed("failed to access code scanning alerts" + error.message));
+                    catch(error => {
+                    if (error.message.toLowerCase() === 'no analysis found') {
+                        core.info("INFO - It seems that code analysis is not enabled and no code analysis found.");
+                    }
+                    else {
+                        core.setFailed("failed to access code scanning alerts - " + error.message);
+                    }
+                });
             }
         }
         else {
             // means we will only focus on the branch supplied by user as input
             yield code_scanning_1.code_scanning(octokit, owner, repo, branch).
-                catch(error => core.setFailed("failed to access code scanning alerts" + error.message));
+                catch(error => core.setFailed("failed to access code scanning alerts - " + error.message));
         }
         // calling the function to add final stats
         let all_stats = supply_total_stats();
@@ -329,7 +336,7 @@ function run() {
         console.log("## Displaying Secret Scanning Statistics \n");
         // getting secret scanning alerts
         yield secret_scanning_1.secret_scanning(octokit, owner, repo, "all").
-            catch(error => core.setFailed("failed to access secret scanning alerts" + error.message));
+            catch(error => core.setFailed("failed to access secret scanning alerts - " + error.message));
         console.log("## End of Displaying Secret Scanning Statistics \n");
     });
 }
