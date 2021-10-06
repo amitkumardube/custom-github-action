@@ -393,7 +393,6 @@ const parse_link_header_1 = __importDefault(__nccwpck_require__(1940));
 // this returns the promise of array of API response containing all repos
 const get_all_repos = (octokit, org, page) => __awaiter(void 0, void 0, void 0, function* () {
     const all_repos = [];
-    console.log(all_repos);
     const result = yield octokit.rest.repos.listForUser({
         //const result = await octokit.rest.repos.listForOrg({
         //org: org,
@@ -402,9 +401,7 @@ const get_all_repos = (octokit, org, page) => __awaiter(void 0, void 0, void 0, 
         page: page
     });
     all_repos.push(...result.data);
-    console.log(all_repos);
     const pagination = parse_link_header_1.default(result.headers.link);
-    console.log(pagination);
     if (pagination && pagination.next) {
         const response = yield exports.get_all_repos(octokit, org, parseInt(pagination.next.page));
         all_repos.push(...response);
