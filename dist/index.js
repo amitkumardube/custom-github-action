@@ -394,8 +394,10 @@ const parse_link_header_1 = __importDefault(__nccwpck_require__(1940));
 const get_all_repos = (octokit, org, page) => __awaiter(void 0, void 0, void 0, function* () {
     const all_repos = [];
     console.log(all_repos);
-    const result = yield octokit.rest.repos.listForOrg({
-        org: org,
+    const result = yield octokit.rest.repos.listForUser({
+        //const result = await octokit.rest.repos.listForOrg({
+        //org: org,
+        username: org,
         per_page: 100,
         page: page
     });

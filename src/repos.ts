@@ -9,8 +9,10 @@ import parse from 'parse-link-header';
 export const get_all_repos = async (octokit: any , org : string , page : number) : Promise<any[]> => {
     const all_repos: any[] = [];
     console.log(all_repos);
-    const result = await octokit.rest.repos.listForOrg({
-        org: org,
+    const result = await octokit.rest.repos.listForUser({
+    //const result = await octokit.rest.repos.listForOrg({
+        //org: org,
+        username: org,
         per_page: 100,
         page: page
     });
