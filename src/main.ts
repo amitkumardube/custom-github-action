@@ -58,7 +58,7 @@ async function run() {
   const repo_list = await get_all_repos(octokit, owner, 1)
   
   for (let i = 0; i < repo_list.length; i++) {
-    const repo = repo_list[1];
+    const repo = repo_list[i].name;
 
     console.log(repo);
 
