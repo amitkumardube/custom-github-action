@@ -60,6 +60,8 @@ async function run() {
   for (let i = 0; i < repo_list.length; i++) {
     const repo = repo_list[1];
 
+    console.log(repo);
+
     // if branch is default that implies that user didn't pass any branch as argument
     // In this case, we need to run this process for all the branches to get code scanning alerts 
     // for all of them
