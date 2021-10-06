@@ -3,6 +3,7 @@ import { createMessage, dismiss_total_all, false_positive_all, open_all, use_in_
 import { append_to_file } from './file';
 import { secret_scanning } from './secret-scanning';
 import { state } from './types';
+import { get_all_repos } from './repos';
 
 // we need two additional imports.
 // These are created by github and are especially built
@@ -41,9 +42,8 @@ async function run() {
   // in the pull request or repository we are issued from
   const context = github.context;
 
-  // with the current context we can extract the name of owner and repo where action is running
+  // with the current context we can extract the name of owner
   const owner = context.repo.owner;
-  const repo = context.repo.repo;
 
   // The Octokit is a helper, to interact with
   // the github REST interface.
@@ -51,52 +51,62 @@ async function run() {
   // here: https://octokit.github.io/rest.js/v18
   const octokit = github.getOctokit(githubToken);
 
-  // if branch is default that implies that user didn't pass any branch as argument
-  // In this case, we need to run this process for all the branches to get code scanning alerts 
-  // for all of them
-  
-  console.log("## Displaying Code Scanning Statistics\n");
+  // with the latest requested change we don't want to focus only on current repo
+  // rather we like to gather stats for all the repos
+  // const repo = context.repo.repo;
 
-  if (branch === 'default') {
-    //branch = context.payload.repository.default_branch;
-    // get the list of all the branches in the repo
-    let { data } = await octokit.rest.repos.listBranches({
+  const repo_list = await get_all_repos(octokit, owner, 1)
+  
+  for (let i = 0; i < repo_list.length; i++) {
+    const repo = repo_list[1];
+
+    // if branch is default that implies that user didn't pass any branch as argument
+    // In this case, we need to run this process for all the branches to get code scanning alerts 
+    // for all of them
+  
+    console.log("## Displaying Code Scanning Statistics\n");
+
+    if (branch === 'default') {
+      //branch = context.payload.repository.default_branch;
+      // get the list of all the branches in the repo
+      let { data } = await octokit.rest.repos.listBranches({
         owner: owner,
         repo: repo
-    });
-    for (let i = 0; i < data.length; i++) {
-      branch = data[i].name;
-      // getting code scanning alerts
+      });
+      for (let i = 0; i < data.length; i++) {
+        branch = data[i].name;
+        // getting code scanning alerts
+        await code_scanning(octokit, owner, repo, branch).
+          catch(error => {
+            if (error.message.toLowerCase() === 'no analysis found') {
+              core.info("INFO - It seems that code analysis is not enabled and no code analysis found.")
+            } else {
+              core.setFailed("failed to access code scanning alerts - " + error.message)
+            }
+          }
+          );
+      }
+    } else {
+      // means we will only focus on the branch supplied by user as input
       await code_scanning(octokit, owner, repo, branch).
-        catch(error => {
-          if (error.message.toLowerCase() === 'no analysis found') {
-            core.info("INFO - It seems that code analysis is not enabled and no code analysis found.")
-          } else {
-            core.setFailed("failed to access code scanning alerts - " + error.message)
-          }
-          }
-        );
+        catch(error => core.setFailed("failed to access code scanning alerts - " + error.message));
     }
-  } else {
-    // means we will only focus on the branch supplied by user as input
-      await code_scanning(octokit, owner, repo, branch).
-      catch(error => core.setFailed("failed to access code scanning alerts - " + error.message));    
+
+    // calling the function to add final stats
+    let all_stats = supply_total_stats();
+    createMessage(all_stats);
+    append_to_file(all_stats, 'code_scanning_alerts.json');
+  
+    console.log("## End of Displaying Code Scanning Statistics \n");
+
+    console.log("## Displaying Secret Scanning Statistics \n");
+
+    // getting secret scanning alerts
+    await secret_scanning(octokit, owner, repo, "all").
+      catch(error => core.setFailed("failed to access secret scanning alerts - " + error.message));
+  
+    console.log("## End of Displaying Secret Scanning Statistics \n");
   }
-
-  // calling the function to add final stats
-  let all_stats = supply_total_stats();
-  createMessage(all_stats);
-  append_to_file(all_stats, 'code_scanning_alerts.json');
-  
-  console.log("## End of Displaying Code Scanning Statistics \n");
-
-  console.log("## Displaying Secret Scanning Statistics \n");
-
-  // getting secret scanning alerts
-  await secret_scanning(octokit, owner, repo, "all").
-    catch(error => core.setFailed("failed to access secret scanning alerts - " + error.message));
-  
-  console.log("## End of Displaying Secret Scanning Statistics \n");
 
 }
 

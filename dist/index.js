@@ -257,6 +257,7 @@ const code_scanning_1 = __nccwpck_require__(7140);
 const display_stats_1 = __nccwpck_require__(6444);
 const file_1 = __nccwpck_require__(4014);
 const secret_scanning_1 = __nccwpck_require__(1630);
+const repos_1 = __nccwpck_require__(9548);
 // we need two additional imports.
 // These are created by github and are especially built
 // for github actions.
@@ -290,54 +291,60 @@ function run() {
         // the context does for example also include information
         // in the pull request or repository we are issued from
         const context = github.context;
-        // with the current context we can extract the name of owner and repo where action is running
+        // with the current context we can extract the name of owner
         const owner = context.repo.owner;
-        const repo = context.repo.repo;
         // The Octokit is a helper, to interact with
         // the github REST interface.
         // You can look up the REST interface
         // here: https://octokit.github.io/rest.js/v18
         const octokit = github.getOctokit(githubToken);
-        // if branch is default that implies that user didn't pass any branch as argument
-        // In this case, we need to run this process for all the branches to get code scanning alerts 
-        // for all of them
-        console.log("## Displaying Code Scanning Statistics\n");
-        if (branch === 'default') {
-            //branch = context.payload.repository.default_branch;
-            // get the list of all the branches in the repo
-            let { data } = yield octokit.rest.repos.listBranches({
-                owner: owner,
-                repo: repo
-            });
-            for (let i = 0; i < data.length; i++) {
-                branch = data[i].name;
-                // getting code scanning alerts
-                yield code_scanning_1.code_scanning(octokit, owner, repo, branch).
-                    catch(error => {
-                    if (error.message.toLowerCase() === 'no analysis found') {
-                        core.info("INFO - It seems that code analysis is not enabled and no code analysis found.");
-                    }
-                    else {
-                        core.setFailed("failed to access code scanning alerts - " + error.message);
-                    }
+        // with the latest requested change we don't want to focus only on current repo
+        // rather we like to gather stats for all the repos
+        // const repo = context.repo.repo;
+        const repo_list = yield repos_1.get_all_repos(octokit, owner, 1);
+        for (let i = 0; i < repo_list.length; i++) {
+            const repo = repo_list[1];
+            // if branch is default that implies that user didn't pass any branch as argument
+            // In this case, we need to run this process for all the branches to get code scanning alerts 
+            // for all of them
+            console.log("## Displaying Code Scanning Statistics\n");
+            if (branch === 'default') {
+                //branch = context.payload.repository.default_branch;
+                // get the list of all the branches in the repo
+                let { data } = yield octokit.rest.repos.listBranches({
+                    owner: owner,
+                    repo: repo
                 });
+                for (let i = 0; i < data.length; i++) {
+                    branch = data[i].name;
+                    // getting code scanning alerts
+                    yield code_scanning_1.code_scanning(octokit, owner, repo, branch).
+                        catch(error => {
+                        if (error.message.toLowerCase() === 'no analysis found') {
+                            core.info("INFO - It seems that code analysis is not enabled and no code analysis found.");
+                        }
+                        else {
+                            core.setFailed("failed to access code scanning alerts - " + error.message);
+                        }
+                    });
+                }
             }
+            else {
+                // means we will only focus on the branch supplied by user as input
+                yield code_scanning_1.code_scanning(octokit, owner, repo, branch).
+                    catch(error => core.setFailed("failed to access code scanning alerts - " + error.message));
+            }
+            // calling the function to add final stats
+            let all_stats = supply_total_stats();
+            display_stats_1.createMessage(all_stats);
+            file_1.append_to_file(all_stats, 'code_scanning_alerts.json');
+            console.log("## End of Displaying Code Scanning Statistics \n");
+            console.log("## Displaying Secret Scanning Statistics \n");
+            // getting secret scanning alerts
+            yield secret_scanning_1.secret_scanning(octokit, owner, repo, "all").
+                catch(error => core.setFailed("failed to access secret scanning alerts - " + error.message));
+            console.log("## End of Displaying Secret Scanning Statistics \n");
         }
-        else {
-            // means we will only focus on the branch supplied by user as input
-            yield code_scanning_1.code_scanning(octokit, owner, repo, branch).
-                catch(error => core.setFailed("failed to access code scanning alerts - " + error.message));
-        }
-        // calling the function to add final stats
-        let all_stats = supply_total_stats();
-        display_stats_1.createMessage(all_stats);
-        file_1.append_to_file(all_stats, 'code_scanning_alerts.json');
-        console.log("## End of Displaying Code Scanning Statistics \n");
-        console.log("## Displaying Secret Scanning Statistics \n");
-        // getting secret scanning alerts
-        yield secret_scanning_1.secret_scanning(octokit, owner, repo, "all").
-            catch(error => core.setFailed("failed to access secret scanning alerts - " + error.message));
-        console.log("## End of Displaying Secret Scanning Statistics \n");
     });
 }
 // Our main method: call the run() function and report any errors
@@ -357,6 +364,51 @@ const supply_total_stats = () => {
     return json_var;
 };
 //# sourceMappingURL=main.js.map
+
+/***/ }),
+
+/***/ 9548:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+// this file will fetch repos from an org and run the code for each repo
+// function is being called from main.ts
+var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
+    return new (P || (P = Promise))(function (resolve, reject) {
+        function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
+        function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
+        step((generator = generator.apply(thisArg, _arguments || [])).next());
+    });
+};
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.get_all_repos = void 0;
+const parse_link_header_1 = __importDefault(__nccwpck_require__(1940));
+// To minimize the API calls , this function calls 100 records ( max allowed ) per API call.
+// this returns the promise of array of API response containing all repos
+const get_all_repos = (octokit, org, page) => __awaiter(void 0, void 0, void 0, function* () {
+    const all_repos = [];
+    const result = yield octokit.rest.repos.listForOrg({
+        org: org,
+        per_page: 100,
+        page: page
+    });
+    all_repos.push(...result.data);
+    const pagination = parse_link_header_1.default(result.headers.link);
+    //console.log(pagination);
+    if (pagination && pagination.next) {
+        const response = yield exports.get_all_repos(octokit, org, parseInt(pagination.next.page));
+        all_repos.push(...response);
+    }
+    return all_repos;
+});
+exports.get_all_repos = get_all_repos;
+//# sourceMappingURL=repos.js.map
 
 /***/ }),
 
